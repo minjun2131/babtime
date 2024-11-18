@@ -8,7 +8,7 @@ export const Wrap = styled.div`
   align-items: center;
   gap: 100px;
   margin: 0 auto;
-  padding: 190px 0 100px 0;
+  padding: 100px 0;
 `;
 
 export const DetailContainer = styled.div`

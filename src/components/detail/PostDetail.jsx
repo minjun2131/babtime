@@ -64,30 +64,30 @@ const RowContent = styled.p`
   color: ${color.black};
 `;
 
-const PostDetail = () => {
+const PostDetail = ({ post }) => {
   return (
     <Container>
       <Image src="/images/thumbnail_sample.png" alt="image" />
       <InfoContainer>
         <TitleContainer>
-          <Title>밥타임</Title>
+          <Title>{post.title}</Title>
           <RatingContainer>
             <Icon>★</Icon>
-            <Rating>4</Rating>
+            <Rating>{post.rating}</Rating>
           </RatingContainer>
           <Like />
         </TitleContainer>
         <RowContainer>
           <RowTitle>주소</RowTitle>
-          <RowContent>서울특별시 강남구 테헤란로44길 8</RowContent>
+          <RowContent>{post.location}</RowContent>
         </RowContainer>
         <RowContainer>
           <RowTitle>종류</RowTitle>
-          <RowContent>한식</RowContent>
+          <RowContent>{post.category}</RowContent>
         </RowContainer>
         <RowContainer>
           <RowTitle>내용</RowTitle>
-          <RowContent>정말 맛있는 한식집입니다.</RowContent>
+          <RowContent>{post.description}</RowContent>
         </RowContainer>
       </InfoContainer>
     </Container>
