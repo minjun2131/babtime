@@ -1,7 +1,8 @@
 import styled from 'styled-components';
+import { typography } from '../configurations/Typography';
 
 /* MyPageProfile Style */
-export const StyledMypageDiv = styled.div`
+export const StyledMypageWrapper = styled.div`
     width: 1200px; /* div의 가로 길이 설정 */
     position: absolute; /* absolute 위치 지정 */
     left: 50%; /* 왼쪽 끝을 화면의 50%로 설정 */
@@ -13,7 +14,7 @@ export const StyledMypageDiv = styled.div`
     justify-content: center;
 `
 
-export const StyledMyPageProfileDiv = styled.div`
+export const StyledMyPageProfileWrapper = styled.div`
     border: 1px solid green;
     margin: 100px 0 100px 0; /* 유저 프로필 영역 위 아래 마진 */
     
@@ -22,7 +23,7 @@ export const StyledMyPageProfileDiv = styled.div`
     justify-content: space-between;
 `
 
-export const StyledMyPageSectionDiv = styled.div`
+export const StyledMyPageSection = styled.div`
     height: 150px;
     width: ${(props) => props.width || '100px'};
     padding: ${(props) => props.padding || '0 0 0 0'};;
@@ -36,7 +37,7 @@ export const StyledMyPageSectionDiv = styled.div`
   }
 `
     /* 이름, 소개, 버튼 영역 */
-export const StyledMyPageDetailDiv = styled.div`
+export const StyledMyPageDetail = styled.div`
     width: 100%;
     margin-bottom: 20px;
     font-size: ${(props) => props.fontSize || '16px'};
@@ -50,7 +51,7 @@ export const StyledLogoutButton = styled.button`
     margin-top: 110px;
     background: none;
     border: none;
-    font-size: 14px;
+    ${typography.body2}
     color: #333;
     cursor: pointer;
     text-decoration: none;
@@ -63,7 +64,7 @@ export const StyledLogoutButton = styled.button`
 `
 
 /* MyPageMyPostList Style */
-export const StyledMyPageMyPostDiv = styled.div`
+export const StyledMyPagePostSection = styled.div`
     border: 1px solid green;
     
     display: flex;
@@ -73,14 +74,14 @@ export const StyledMyPageMyPostDiv = styled.div`
 
 export const StyledMyPageTitle = styled.div`
     width: 100%;
-    font-size: 20px;
+    ${typography.title2}
     font-weight: bold;
     padding-bottom: 10px;
     border-bottom: 2px solid #D9D9D9; 
     margin-bottom: 20px; 
 `
 
-export const StyledMyPostListDiv = styled.div`
+export const StyledMyPagePostList = styled.div`
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -90,10 +91,3 @@ export const StyledMyPostListDiv = styled.div`
 `
 
 /* MyPageLikePostList Style  */
-export const StyledMyPageLikePostDiv = styled.div`
-    border: 1px solid red;
-    
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 50px;
-`

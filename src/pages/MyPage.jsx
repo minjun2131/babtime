@@ -1,18 +1,18 @@
-import Header from "../components/Header"
+import Header from "../components/header/Header"
 import MyPageLikePostList from "../components/MyPageLikePostList"
 import MyPageMyPostList from "../components/MyPageMyPostList"
 import MyPageProfile from "../components/MyPageProfile"
-import { StyledMypageDiv } from "../styles/MyPageStyle"
+import { StyledMypageWrapper } from "../styles/MyPageStyle"
 
 const MyPage = () => {
   return (
     <>
       <Header />
-      <StyledMypageDiv>
+      <StyledMypageWrapper>
         <MyPageProfile />
         <MyPageMyPostList />
         <MyPageLikePostList />
-      </StyledMypageDiv>
+      </StyledMypageWrapper>
 
     </>
   )

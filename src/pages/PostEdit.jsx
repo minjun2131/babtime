@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Header from '../components/Header';
+import Header from '../components/header/Header';
 import {
   Container,
   ImageUpload,
@@ -16,7 +16,7 @@ import {
   Star,
   SubmitButton,
   CancelButton
-} from '../components/PostEditor/PostEditorStyle';
+} from '../styles/PostEditorStyle';
 
 const PostEdit = ({ initialData }) => {
   const [selectedCategory, setSelectedCategory] = useState(initialData?.category || '');

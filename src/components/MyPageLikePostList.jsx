@@ -1,12 +1,20 @@
 import React from 'react'
-import { StyledMyPageLikePostDiv, StyledMyPageTitle } from "../styles/MyPageStyle"
+import { StyledMyPagePostSection, StyledMyPageTitle, StyledMyPagePostList } from "../styles/MyPageStyle"
 
 function MyPageLikePostList() {
     return (
         <>
-            <StyledMyPageLikePostDiv>
+            <StyledMyPagePostSection>
                 <StyledMyPageTitle>좋아하는 게시글</StyledMyPageTitle>
-            </StyledMyPageLikePostDiv>
+                <StyledMyPagePostList>
+                    <div style={{ width: '358px', height: '380px', border: 'black 1px solid' }}></div>
+                    <div style={{ width: '358px', height: '380px', border: 'black 1px solid' }}></div>
+                    <div style={{ width: '358px', height: '380px', border: 'black 1px solid' }}></div>
+                    <div style={{ width: '358px', height: '380px', border: 'black 1px solid' }}></div>
+                    <div style={{ width: '358px', height: '380px', border: 'black 1px solid' }}></div>
+                    <div style={{ width: '358px', height: '380px', border: 'black 1px solid' }}></div>
+                </StyledMyPagePostList>
+            </StyledMyPagePostSection>
         </>
     )
 }

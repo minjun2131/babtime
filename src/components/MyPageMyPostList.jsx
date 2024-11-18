@@ -1,21 +1,21 @@
 import React from 'react'
-import { StyledMyPageMyPostDiv, StyledMyPageTitle, StyledMyPostListDiv } from "../styles/MyPageStyle"
+import { StyledMyPagePostSection, StyledMyPageTitle, StyledMyPagePostList } from "../styles/MyPageStyle"
 
 
 function MyPageMyPostList() {
   return (
     <>
-        <StyledMyPageMyPostDiv>
+        <StyledMyPagePostSection>
             <StyledMyPageTitle>나의 게시글</StyledMyPageTitle>
-            <StyledMyPostListDiv>
+            <StyledMyPagePostList>
                 <div style={{width: '358px', height: '380px', border:'black 1px solid'}}></div>
                 <div style={{width: '358px', height: '380px', border:'black 1px solid'}}></div>
                 <div style={{width: '358px', height: '380px', border:'black 1px solid'}}></div>
                 <div style={{width: '358px', height: '380px', border:'black 1px solid'}}></div>
                 <div style={{width: '358px', height: '380px', border:'black 1px solid'}}></div>
                 <div style={{width: '358px', height: '380px', border:'black 1px solid'}}></div>
-            </StyledMyPostListDiv>
-        </StyledMyPageMyPostDiv>
+            </StyledMyPagePostList>
+        </StyledMyPagePostSection>
     </>
   )
 }

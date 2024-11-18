@@ -1,26 +1,27 @@
 import React from 'react'
-import { StyledMyPageProfileDiv, StyledMyPageSectionDiv, StyledMyPageDetailDiv, StyledLogoutButton } from "../styles/MyPageStyle"
+import { StyledMyPageProfileWrapper, StyledMyPageSection, StyledMyPageDetail, StyledLogoutButton } from "../styles/MyPageStyle"
+import Button from '../components/detail/Button';
 
 function MyPageProfile() {
   return (
-        <StyledMyPageProfileDiv>
-            <StyledMyPageSectionDiv width="150px">
+        <StyledMyPageProfileWrapper>
+            <StyledMyPageSection width="150px">
                 <img src="/images/user.svg" alt="밥타임" />
-            </StyledMyPageSectionDiv>
+            </StyledMyPageSection>
 
-            <StyledMyPageSectionDiv width="950px" padding="15px 0px 15px 30px">
-                <StyledMyPageDetailDiv fontSize="24px">닉네임</StyledMyPageDetailDiv>
-                <StyledMyPageDetailDiv>자기 소개</StyledMyPageDetailDiv>
-                <StyledMyPageDetailDiv>
-                    <button>프로필 수정</button>
-                    <button>비밀번호 변경</button>
-                </StyledMyPageDetailDiv>
-            </StyledMyPageSectionDiv>
+            <StyledMyPageSection width="950px" padding="15px 0px 15px 30px">
+                <StyledMyPageDetail fontSize="24px">닉네임</StyledMyPageDetail>
+                <StyledMyPageDetail>자기 소개</StyledMyPageDetail>
+                <StyledMyPageDetail>
+                    <Button label="프로필 수정" handleClick={() => {}} />
+                    <Button category="sub" label="비밀번호 변경" handleClick={() => {}} />
+                </StyledMyPageDetail>
+            </StyledMyPageSection>
             
-            <StyledMyPageSectionDiv>
+            <StyledMyPageSection>
                 <StyledLogoutButton onClick={() => alert('로그 아웃 하시겠습니까? 로직')}>로그아웃</StyledLogoutButton>
-            </StyledMyPageSectionDiv>
-        </StyledMyPageProfileDiv>  
+            </StyledMyPageSection>
+        </StyledMyPageProfileWrapper>  
   )
 }
 
