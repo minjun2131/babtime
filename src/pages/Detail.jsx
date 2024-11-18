@@ -1,4 +1,4 @@
-import Header from '../components/Header';
+import Header from '../components/header/Header';
 import CommentForm from '../components/detail/CommentForm';
 import CommentList from '../components/detail/CommentList';
 import PostDetail from '../components/detail/postDetail';

@@ -112,8 +112,10 @@ export const CategoryContainer = styled.div`
 
 export const CategoryItem = styled.div`
   cursor: pointer;
+  color: ${(props) => (props.selected ? 'black;' : '#d9d9d9;')};
   font-weight: ${(props) => (props.selected ? 'bold' : 'normal')}; /* 선택된 글씨는 볼드 처리 */
   &:hover {
+    color: black;
     font-weight: bold;
   }
   text-align: center;
