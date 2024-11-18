@@ -48,5 +48,5 @@ export const typography = {
         font-size: 10px;
         font-weight: 400;
         line-height: 14px;
-    `,
+    `
 };

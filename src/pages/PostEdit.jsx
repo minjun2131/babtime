@@ -1,89 +1,57 @@
 import { useState } from 'react';
-import Header from '../components/Header';
-import {
-  Container,
-  ImageUpload,
-  ImagePlaceholder,
-  ButtonGroup,
-  Button,
-  InputContainer,
-  Label,
-  Input,
-  TextArea,
-  CategoryContainer,
-  CategoryItem,
-  RatingContainer,
-  Star,
-  SubmitButton,
-  CancelButton
-} from '../styles/PostEditorStyle';
 
-const PostEdit = ({ initialData }) => {
-  const [selectedCategory, setSelectedCategory] = useState(initialData?.category || '');
-  const [rating, setRating] = useState(initialData?.rating || 0);
+import Header from '../components/header/Header';
+import ImageUploader from '../components/postedit/ImageUploader';
+import TextInput from '../components/postedit/TextInput';
+import CategorySelector from '../components/postedit/CategorySelector';
+import TextAreaInput from '../components/postedit/TextAreaInput';
+import RatingSelector from '../components/postedit/RatingSelector';
+import { Container, ButtonGroup, SubmitButton, CancelButton } from '../styles/PostEditStyle';
+
+const PostEdit = ({ isEdit = false, initialData = {} }) => {
+  const [title, setTitle] = useState(initialData.title || '');
+  const [address, setAddress] = useState(initialData.address || '');
+  const [content, setContent] = useState(initialData.content || '');
+  const [selectedCategory, setSelectedCategory] = useState(initialData.category || '');
+  const [rating, setRating] = useState(initialData.rating || 0);
+  const [image, setImage] = useState(initialData.image || null);
 
   const categories = ['한식', '중식', '양식', '일식', '분식', '카페 / 베이커리'];
 
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(selectedCategory === category ? '' : category);
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = () => setImage(reader.result);
+    reader.readAsDataURL(file);
+    event.target.value = null;
   };
 
-  const handleRatingClick = (value) => {
-    setRating(value);
+  const resetForm = () => {
+    setTitle('');
+    setAddress('');
+    setContent('');
+    setSelectedCategory('');
+    setRating(0);
+    setImage(null);
   };
 
   return (
     <>
       <Header />
       <Container>
-        <ImageUpload>
-          <ImagePlaceholder>
-            {initialData?.image ? <img src={initialData.image} alt="Uploaded" /> : '이미지를 업로드해주세요'}
-          </ImagePlaceholder>
-          <ButtonGroup>
-            <Button>사진 변경</Button>
-            <Button>사진 삭제</Button>
-          </ButtonGroup>
-        </ImageUpload>
-        <InputContainer>
-          <Label>제목</Label>
-          <Input type="text" defaultValue={initialData?.title} />
-        </InputContainer>
-        <InputContainer>
-          <Label>주소</Label>
-          <Input type="text" defaultValue={initialData?.address} />
-        </InputContainer>
-        <InputContainer>
-          <Label>종류</Label>
-          <CategoryContainer>
-            {categories.map((category) => (
-              <CategoryItem
-                key={category}
-                selected={category === selectedCategory}
-                onClick={() => handleCategoryClick(category)}
-              >
-                {category}
-              </CategoryItem>
-            ))}
-          </CategoryContainer>
-        </InputContainer>
-        <InputContainer>
-          <Label>내용</Label>
-          <TextArea defaultValue={initialData?.content} />
-        </InputContainer>
-        <InputContainer>
-          <Label>평점</Label>
-          <RatingContainer>
-            {Array.from({ length: 5 }, (_, index) => (
-              <Star key={index} selected={index < rating} onClick={() => handleRatingClick(index + 1)}>
-                ★
-              </Star>
-            ))}
-          </RatingContainer>
-        </InputContainer>
+        <ImageUploader image={image} onUpload={handleImageUpload} onDelete={() => setImage(null)} />
+        <TextInput label="제목" placeholder="제목을 입력해주세요." value={title} onChange={setTitle} />
+        <TextInput label="주소" placeholder="주소를 입력해주세요." value={address} onChange={setAddress} />
+        <CategorySelector
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onCategoryClick={(category) => setSelectedCategory(selectedCategory === category ? '' : category)}
+        />
+        <TextAreaInput label="내용" placeholder="내용을 입력해주세요." value={content} onChange={setContent} />
+        <RatingSelector rating={rating} onRatingClick={setRating} />
         <ButtonGroup>
-          <SubmitButton>수정</SubmitButton>
-          <CancelButton>취소</CancelButton>
+          <SubmitButton>{isEdit ? '수정' : '등록'}</SubmitButton>
+          <CancelButton onClick={isEdit ? undefined : resetForm}>취소</CancelButton>
         </ButtonGroup>
       </Container>
     </>

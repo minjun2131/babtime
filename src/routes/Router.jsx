@@ -6,7 +6,6 @@ import PostEdit from '../pages/PostEdit';
 import SignUp from '../pages/SignUp';
 import MyPage from '../pages/MyPage';
 import Detail from '../pages/Detail';
-import PostRegist from '../pages/PostRegist';
 
 function Router() {
   return (
@@ -18,7 +17,6 @@ function Router() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/detail" element={<Detail />} />
-        <Route path="/postregist" element={<PostRegist />} />
         <Route path="/postedit" element={<PostEdit />} />
       </Routes>
     </BrowserRouter>
