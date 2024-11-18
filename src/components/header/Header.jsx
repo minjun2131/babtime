@@ -1,10 +1,11 @@
 import styled from 'styled-components';
-import { color } from '../configurations/Color';
+import { color } from '../../configurations/Color';
 import Search from './Search';
 import HeaderRight from './HeaderRight';
 
 const HeaderStyle = styled.header`
   position: fixed;
+  z-index: 99;
   left: 0;
   top: 0;
   width: 100%;

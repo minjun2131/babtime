@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import Header from '../components/Header';
-import ProfileSmall from '../components/ProfileSmall';
+import Header from '../components/header/Header.jsx';
+import ProfileSmall from '../components/header/ProfileSmall.jsx';
 import { Link } from 'react-router-dom';
 import { MainVisual, IntroTitle, FeedUl, FeedLiTop, Writer, Date, FeedLiBtm } from '../styles/MainStyle.jsx';
 
@@ -13,8 +13,7 @@ const Inner = styled.div`
 const Main = () => {
   return (
     <>
-      <Header /*월요일에 상위 컴포넌트로 이동*/ />
-
+      <Header />
       <MainVisual></MainVisual>
       <Inner>
         <IntroTitle>다양한 맛집 리뷰를 확인해 보세요.</IntroTitle>

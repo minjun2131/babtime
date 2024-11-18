@@ -1,4 +1,4 @@
-import { color } from '../configurations/Color';
+import { color } from '../../configurations/Color';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import ProfileSmall from './ProfileSmall';
