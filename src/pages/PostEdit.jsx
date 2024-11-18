@@ -16,7 +16,7 @@ import {
   Star,
   SubmitButton,
   CancelButton
-} from '../components/PostEditor/PostEditorStyle';
+} from '../styles/PostEditorStyle';
 
 const PostEdit = ({ initialData }) => {
   const [selectedCategory, setSelectedCategory] = useState(initialData?.category || '');
