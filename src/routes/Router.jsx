@@ -6,7 +6,7 @@ import EditPost from '../pages/EditPost';
 import SignUp from '../pages/SignUp';
 import MyPage from '../pages/MyPage';
 import Detail from '../pages/Detail';
-import PostRegist from '../pages/PostRegist';
+import RegistPost from '../pages/RegistPost';
 
 function Router() {
   return (
@@ -16,10 +16,10 @@ function Router() {
         <Route path="/main" element={<Main />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/editpost" element={<EditPost />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/detail" element={<Detail />} />
-        <Route path="/postregist" element={<PostRegist />} />
+        <Route path="/postregist" element={<RegistPost />} />
+        <Route path="/editpost" element={<EditPost />} />
       </Routes>
     </BrowserRouter>
   );
