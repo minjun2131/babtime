@@ -4,7 +4,6 @@ import ProfileSmall from '../components/header/ProfileSmall.jsx';
 import { Link } from 'react-router-dom';
 import { MainVisual, IntroTitle, FeedUl, FeedLiTop, Writer, Date, FeedLiBtm } from '../styles/MainStyle.jsx';
 
-// 월요일에 글로벌 스타일로 이동
 const Inner = styled.div`
   width: 1200px;
   margin: 0 auto;
@@ -29,7 +28,7 @@ export const FeedLi = () => {
   return (
     <li>
       <FeedLiTop>
-        <Link to={`/MyPage.jsx`}></Link>
+        <Link to={`/MyPage`}></Link>
         <ProfileSmall></ProfileSmall>
         <div>
           <Writer>밥타임</Writer>
@@ -37,7 +36,7 @@ export const FeedLi = () => {
         </div>
       </FeedLiTop>
       <FeedLiBtm>
-        <Link to={`/Detail.jsx`}></Link>
+        <Link to={`/Detail`}></Link>
         <figure>
           <img src="../../images/thumbnail_sample.png" alt="" />
         </figure>

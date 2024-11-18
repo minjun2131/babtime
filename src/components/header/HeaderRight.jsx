@@ -24,8 +24,10 @@ const HeaderRight = ({ hasUserInfo }) => {
   if (hasUserInfo) {
     return (
       <HeaderRightDiv>
-        <ButtonPrimary>새 글 작성</ButtonPrimary>
-        <Link to={`../pages/MyPage.jsx`}>
+        <Link to={`/PostEdit`}>
+          <ButtonPrimary>새 글 작성</ButtonPrimary>
+        </Link>
+        <Link to={`/MyPage`}>
           <ProfileSmall />
         </Link>
       </HeaderRightDiv>
@@ -33,8 +35,8 @@ const HeaderRight = ({ hasUserInfo }) => {
   } else {
     return (
       <HeaderRightDiv>
-        <Link to={`../pages/Login.jsx`}>Login</Link>
-        <Link to={`../pages/SignUp.jsx`}>Sign Up</Link>
+        <Link to={`/Login`}>Login</Link>
+        <Link to={`/SignUp`}>Sign Up</Link>
       </HeaderRightDiv>
     );
   }
