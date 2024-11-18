@@ -2,11 +2,11 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from '../pages/Home';
 import Main from '../pages/Main';
 import Login from '../pages/Login';
-import EditPost from '../pages/EditPost';
+import PostEdit from '../pages/PostEdit';
 import SignUp from '../pages/SignUp';
 import MyPage from '../pages/MyPage';
 import Detail from '../pages/Detail';
-import RegistPost from '../pages/RegistPost';
+import PostRegist from '../pages/PostRegist';
 
 function Router() {
   return (
@@ -18,8 +18,8 @@ function Router() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/detail" element={<Detail />} />
-        <Route path="/postregist" element={<RegistPost />} />
-        <Route path="/editpost" element={<EditPost />} />
+        <Route path="/postregist" element={<PostRegist />} />
+        <Route path="/postedit" element={<PostEdit />} />
       </Routes>
     </BrowserRouter>
   );
