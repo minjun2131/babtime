@@ -2,6 +2,7 @@ import React from 'react';
 import { color } from '../configurations/Color';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import ProfileSmall from './ProfileSmall';
 
 const HeaderRightDiv = styled.div`
   display: flex;
@@ -12,23 +13,12 @@ const HeaderRightDiv = styled.div`
 const ButtonPrimary = styled.button`
   display: inline-block;
   background: ${color.white};
-  width: 100px;
-  height: 40px;
-  color: #ffb879;
-  border: 1px solid #ffb879;
+  padding: 10px 20px;
+  color: ${color.primary};
+  border: 1px solid ${color.primary};
   border-radius: 40px;
   font-size: 16px;
   cursor: pointer;
-`;
-
-const HeaderProfile = styled.a`
-  width: 50px;
-  height: 50px;
-  border-radius: 50px;
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
-  background-size: cover;
-  background-image: ${(props) => (props.profileImage ? `url(${props.profileImage})` : `url('../../images/user.svg')`)};
 `;
 
 const HeaderRight = ({ hasUserInfo }) => {
@@ -36,14 +26,16 @@ const HeaderRight = ({ hasUserInfo }) => {
     return (
       <HeaderRightDiv>
         <ButtonPrimary>새 글 작성</ButtonPrimary>
-        <HeaderProfile></HeaderProfile>
+        <Link to={`../pages/MyPage.jsx`}>
+          <ProfileSmall />
+        </Link>
       </HeaderRightDiv>
     );
   } else {
     return (
       <HeaderRightDiv>
-        <Link>Login</Link>
-        <Link>Sign Up</Link>
+        <Link to={`../pages/Login.jsx`}>Login</Link>
+        <Link to={`../pages/SignUp.jsx`}>Sign Up</Link>
       </HeaderRightDiv>
     );
   }
