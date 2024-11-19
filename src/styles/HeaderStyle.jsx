@@ -49,6 +49,7 @@ export const SearchWrap = styled.form`
     border-radius: 50px;
     box-shadow: 0px 0px 10px #ffb879;
     font-size: 16px;
+    outline-color: ${color.primary};
   }
 
   button {

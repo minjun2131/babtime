@@ -3,11 +3,14 @@ import HeaderRight from './HeaderRight';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../services/supabase.js';
 import { HeaderWrap, Inner } from '../../styles/HeaderStyle.jsx';
+import { useLocation, Link } from 'react-router-dom';
 
 const Header = ({ searchTerm, setSearchTerm }) => {
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
+
+  const location = useLocation();
 
   const [hasUserInfo, setHasUserInfo] = useState(false);
 
@@ -30,12 +33,13 @@ const Header = ({ searchTerm, setSearchTerm }) => {
     <HeaderWrap>
       <Inner>
         <h1>
-          <a href="/">
+          <Link to={`/Main`}>
             <img src="../images/logo_horizontal.svg" alt="밥타임" />
-          </a>
+          </Link>
         </h1>
-
-        <Search placeholderText="제목으로 검색" value={searchTerm} onChange={handleSearchChange} />
+        {location.pathname === '/Main' && ( // 경로가 /main일 때만 Search 컴포넌트 렌더링
+          <Search placeholderText="제목으로 검색" value={searchTerm} onChange={handleSearchChange} />
+        )}
 
         <HeaderRight hasUserInfo={hasUserInfo} />
       </Inner>
