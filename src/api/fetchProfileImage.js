@@ -1,6 +1,6 @@
 import { supabase } from '../services/supabase';
 
-export const uploadProfileImage = async ( file, userId ) => {
+export const uploadProfileImage = async ({ file, userId }) => {
     if (!file || !userId) return null;
 
     const fileName = `${userId}/${file.name}`; // 고유한 파일 이름 설정
@@ -17,12 +17,18 @@ export const uploadProfileImage = async ( file, userId ) => {
     }
 
     // 업로드한 파일의 공개 URL 가져오기
-    const { data: publicUrlData } = supabase.storage
+    const { data: publicUrlData, error: urlError } = supabase.storage
         .from("profile_images")
         .getPublicUrl(fileName);
 
+    if (urlError) {
+        console.error("Error getting public URL:", urlError);
+        return null;
+    }
+    console.log("Public URL:", publicUrlData.publicUrl); // 공개 URL 확인
     return publicUrlData?.publicUrl;
 };
+
 
 export const updateProfileImage = async ({ img_url = null, userId }) => {
     const { data, error } = await supabase
