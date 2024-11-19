@@ -19,7 +19,7 @@ function MyPageProfileEdit({ setIsProfileModalOpen, paramUser, loginUser }) {
     // userId가 없으면 로그인 페이지로 리디렉션
     useEffect(() => {
         if (!userId) {
-            navigate(`/mypage/${userId}`);  // 로그인 페이지로 이동
+            navigate(`/mypage/${userId}`);  
         }
     }, [userId, navigate]);
 

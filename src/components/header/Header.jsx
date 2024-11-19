@@ -28,14 +28,14 @@ const Header = ({ searchTerm, setSearchTerm }) => {
   //   checkUser();
   // }, []);
 
-  const [loginUser, setUser] = useState(null);
+  const [loginUser, setLoginUser] = useState(null);
 
   // 로그인한 유저
   useEffect(() => {
     const fetchUser = async () => {
       const { data } = await supabase.auth.getUser();
 
-      setUser(data.user);
+      setLoginUser(data.user);
     };
 
     fetchUser();

@@ -21,7 +21,7 @@ export const PostList = ({ posts, loading, error, userInfo }) => {
           <li key={post.id}>
             <PostBoxTop>
               {post.userId && <Link to={`/myPage/${post.userId}`}></Link>}
-              <ProfileSmall></ProfileSmall>
+              <ProfileSmall profileImage={userInfo ? userInfo.profile_image_url : post.userImage}></ProfileSmall>
               <div>
                 <Writer>{userInfo ? userInfo.name : post.userName}</Writer>
                 <StyledDate>{formattedDate}</StyledDate>
