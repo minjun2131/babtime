@@ -44,7 +44,6 @@ const PostEdit = () => {
 
   // 기존 게시물 데이터를 불러오기
   useEffect(() => {
-    let hasShownToast = false;
     const fetchPost = async () => {
       if (urlId) {
         const { data, error } = await supabase.from('posts').select('*').eq('id', urlId).single();
@@ -58,10 +57,6 @@ const PostEdit = () => {
           } = await supabase.auth.getUser();
 
           if (data.user_id !== user.id) {
-            if (!hasShownToast) {
-              toast.warn('게시글을 수정할 권한이 없습니다.');
-              hasShownToast = true;
-            }
             nav(-1);
             return;
           }
