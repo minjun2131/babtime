@@ -33,7 +33,15 @@ const PostEdit = () => {
           return;
         }
         if (data) {
-          // 게시물 데이터가 있으면 필드 채우기 및 수정 모드 활성화
+          const {
+            data: { user }
+          } = await supabase.auth.getUser();
+
+          if (data.user_id !== user.id) {
+            alert('게시글을 수정할 권한이 없습니다.');
+            nav(-1);
+            return;
+          }
           setTitle(data.title);
           setAddress(data.location);
           setContent(data.description);
@@ -45,7 +53,7 @@ const PostEdit = () => {
       }
     };
     fetchPost();
-  }, [urlId]);
+  }, [urlId, nav]);
 
   // 파일 이름 생성
   const generateFileName = (file) => {
