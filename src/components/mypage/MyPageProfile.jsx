@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   StyledMyPageProfileWrapper,
   StyledMyPageSection,
@@ -10,15 +10,23 @@ import MyPageProfileEdit from './MyPageProfileEdit';
 import MyPagePwdEdit from './MyPagePwdEdit';
 import { supabase } from '../../services/supabase';
 import { useNavigate } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import { fetchGetProfileImage } from '../../api/fetchUserData';
 
-function MyPageProfile({ paramUser, loginUser }) {
+function MyPageProfile({ paramUser, loginUser, triggerReload  }) {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false); // 모달 열기/닫기 상태 관리
   const [isPwdModalOpen, setIsPwdModalOpen] = useState(false); // 모달 열기/닫기 상태 관리
+  const [profileImage, setProfileImage] = useState(null);
   const nav = useNavigate();
 
+  useEffect(() => {
+    fetchGetProfileImage({ setProfileImage, loginUser });
+}, [loginUser]);
+  
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    alert('로그아웃이 완료되었습니다.');
+    toast.success('로그아웃이 완료되었습니다.');
     nav('/');
   };
 
@@ -26,7 +34,7 @@ function MyPageProfile({ paramUser, loginUser }) {
     <>
       <StyledMyPageProfileWrapper>
         <StyledMyPageSection $width="150px">
-          <img src="/images/user.svg" alt="user Image" />
+          <img src={ profileImage || "/images/user.svg"} alt="user Image" />
         </StyledMyPageSection>
 
         <StyledMyPageSection $width="950px" $padding="15px 0px 15px 30px">
@@ -51,9 +59,9 @@ function MyPageProfile({ paramUser, loginUser }) {
       </StyledMyPageProfileWrapper>
 
       {/* MyPageProfileEdit 모달 */}
-      {isProfileModalOpen && <MyPageProfileEdit setIsProfileModalOpen={setIsProfileModalOpen} />}
+      {isProfileModalOpen && <MyPageProfileEdit setIsProfileModalOpen={setIsProfileModalOpen} paramUser={paramUser} loginUser={loginUser} triggerReload ={triggerReload }/>}
       {/* MyPagePwdEdit 모달 */}
-      {isPwdModalOpen && <MyPagePwdEdit setIsPwdModalOpen={setIsPwdModalOpen} />}
+      {isPwdModalOpen && <MyPagePwdEdit setIsPwdModalOpen={setIsPwdModalOpen}/>}
     </>
   );
 }
