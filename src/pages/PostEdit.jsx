@@ -42,11 +42,12 @@ const PostEdit = () => {
       if (isEdit) {
         await supabase.from('posts').update(postPayload).eq('id', postId);
         toast.success('게시글이 성공적으로 수정되었습니다.');
+        nav(-1);
       } else {
         await supabase.from('posts').insert(postPayload);
         toast.success('게시글이 성공적으로 등록되었습니다.');
+        nav('/');
       }
-      nav('/');
     } catch (error) {
       console.error('Error saving post:', error.message);
       toast.error('게시글 저장에 실패했습니다.');
