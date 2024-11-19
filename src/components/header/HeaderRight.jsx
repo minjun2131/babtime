@@ -1,33 +1,15 @@
-import { color } from '../../configurations/Color';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import ProfileSmall from './ProfileSmall';
+import { HeaderRightDiv, ButtonPrimary } from '../../styles/HeaderStyle.jsx';
 
-const HeaderRightDiv = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-`;
-
-const ButtonPrimary = styled.button`
-  display: inline-block;
-  background: ${color.white};
-  padding: 10px 20px;
-  color: ${color.primary};
-  border: 1px solid ${color.primary};
-  border-radius: 40px;
-  font-size: 16px;
-  cursor: pointer;
-`;
-
-const HeaderRight = ({ hasUserInfo }) => {
-  if (hasUserInfo) {
+const HeaderRight = ({ loginUser }) => {
+  if (loginUser) {
     return (
       <HeaderRightDiv>
         <Link to={`/PostEdit`}>
           <ButtonPrimary>새 글 작성</ButtonPrimary>
         </Link>
-        <Link to={`/MyPage`}>
+        <Link to={`/MyPage/${loginUser.id}`}>
           <ProfileSmall />
         </Link>
       </HeaderRightDiv>

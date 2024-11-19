@@ -22,7 +22,7 @@ const Main = () => {
         const userPromises = posts.map(async (post) => {
           const { data: user, error: userError } = await supabase
             .from('users')
-            .select('name')
+            .select('*')
             .eq('id', post.user_id)
             .single();
 
@@ -31,7 +31,7 @@ const Main = () => {
             return null;
           }
 
-          return { ...post, userName: user.name };
+          return { ...post, userName: user.name, userId: user.id };
         });
 
         const postsWithUserNames = await Promise.all(userPromises);

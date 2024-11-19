@@ -20,7 +20,7 @@ export const PostList = ({ posts, loading, error, userInfo }) => {
         return (
           <li key={post.id}>
             <PostBoxTop>
-              <Link to={`/MyPage`}></Link>
+              {post.userId && <Link to={`/myPage/${post.userId}`}></Link>}
               <ProfileSmall></ProfileSmall>
               <div>
                 <Writer>{userInfo ? userInfo.name : post.userName}</Writer>
@@ -28,7 +28,7 @@ export const PostList = ({ posts, loading, error, userInfo }) => {
               </div>
             </PostBoxTop>
             <PostBoxBtm image={post.image_url}>
-              <Link to={`/Detail/${post.id}`}></Link>
+              <Link to={`/detail/${post.id}`}></Link>
               <figure></figure>
               <p>{post.description}</p>
             </PostBoxBtm>
