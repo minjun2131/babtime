@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 
-function MyPageProfileEdit({ setIsProfileModalOpen, paramUser, loginUser }) {
+function MyPageProfileEdit({ setIsProfileModalOpen, paramUser, loginUser, triggerReload }) {
     const fileInputRef = useRef();
     const [previewUrl, setPreviewUrl] = useState(null);
     const [profileImage, setProfileImage] = useState(null);
@@ -15,13 +15,6 @@ function MyPageProfileEdit({ setIsProfileModalOpen, paramUser, loginUser }) {
     const [introduce, setIntroduce] = useState(""); // 소개 상태
     const userId = paramUser.id && loginUser.id; // 로그인 유저 id
     const navigate = useNavigate();
-
-    // userId가 없으면 로그인 페이지로 리디렉션
-    useEffect(() => {
-        if (!userId) {
-            navigate(`/mypage/${userId}`);  
-        }
-    }, [userId, navigate]);
 
     // Supabase에서 사용자 정보 가져오기
     useEffect(() => {
@@ -48,13 +41,14 @@ function MyPageProfileEdit({ setIsProfileModalOpen, paramUser, loginUser }) {
             setFile(selectedFile);
         }
     }
-
+    
     // 유저 정보 수정 
     const handleProfileSave = async () => {
         // image 파일을 Supabase storage에 업로드
         const uploadedUrl = await uploadProfileImage({ file, userId });
         fetchUpdateUserData({ userId, name, introduce, uploadedUrl });
         toast.success('프로필이 수정되었습니다.');
+        triggerReload();
         setIsProfileModalOpen(false);
     }
 
