@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyledMyPagePostSection, StyledMyPageTitle, StyledMyPagePostList } from "../styles/MyPageStyle"
+import { StyledMyPagePostSection, StyledMyPageTitle, StyledMyPagePostList } from "../../styles/MyPageStyle"
 
 function MyPageLikePostList() {
     return (
