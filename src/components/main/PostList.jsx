@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ProfileSmall from '../header/ProfileSmall.jsx';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../services/supabase.js';
-import { PostUl, PostBoxTop, Writer, Date as StyledDate, PostBoxBtm } from '../../styles/MainStyle.jsx';
+import { PostUl, PostBoxTop, Writer, StyledDate, PostBoxBtm } from '../../styles/MainStyle.jsx';
 
 export const PostList = () => {
   const [postData, setPostData] = useState([]);
@@ -55,7 +55,8 @@ export const PostList = () => {
       {postData.map((post) => {
         const formattedString = post.created_at.replace(/\.\d+/, '');
         const date = new Date(formattedString);
-        const formattedDate = date.toLocaleString();
+        //const formattedDate = date.toLocaleString();
+        const formattedDate = date.toLocaleDateString(); // 날짜만 표시
 
         return (
           <li key={post.id}>
@@ -71,7 +72,7 @@ export const PostList = () => {
               <Link to={`/Detail/${post.id}`}></Link>
               <figure></figure>
               <p>
-                {post.title}
+                {/* {post.title} */}
                 {post.description}
               </p>
             </PostBoxBtm>

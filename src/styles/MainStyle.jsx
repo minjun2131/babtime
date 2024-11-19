@@ -64,7 +64,7 @@ export const PostBoxTop = styled.article`
 export const Writer = styled.p`
   font-weight: 700;
 `;
-export const Date = styled.p`
+export const StyledDate = styled.p`
   color: ${color.gray};
   margin-top: 10px;
 `;
