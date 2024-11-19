@@ -2,15 +2,26 @@ import React, { useRef, useState, useEffect } from 'react';
 import { StyledModalWrapper, StyledModalContent, StyledModalCloseBtn, StyledModalTitle, StyledModalBtnWrapper, StyledModalInputWrapper, StyledModalInput, StyledMyPageBtn } from "../../styles/MyPageStyle"
 import { uploadProfileImage } from '../../api/fetchProfileImage';
 import { fetchGetUserData, fetchUpdateUserData } from '../../api/fetchUserData';
+import { useNavigate } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
-function MyPageProfileEdit({ setIsProfileModalOpen }) {
+function MyPageProfileEdit({ setIsProfileModalOpen, paramUser, loginUser }) {
     const fileInputRef = useRef();
     const [previewUrl, setPreviewUrl] = useState(null);
     const [profileImage, setProfileImage] = useState(null);
     const [file, setFile] = useState(null); // file 상태 추가
     const [name, setName] = useState(""); // 이름 상태
     const [introduce, setIntroduce] = useState(""); // 소개 상태
-    const userId = 'd639c8f7-b695-476b-bf1d-c0b03c35e259'; // test 계정
+    const userId = paramUser.id && loginUser.id; // 로그인 유저 id
+    const navigate = useNavigate();
+
+    // userId가 없으면 로그인 페이지로 리디렉션
+    useEffect(() => {
+        if (!userId) {
+            navigate(`/mypage/${userId}`);  // 로그인 페이지로 이동
+        }
+    }, [userId, navigate]);
 
     // Supabase에서 사용자 정보 가져오기
     useEffect(() => {
@@ -39,10 +50,12 @@ function MyPageProfileEdit({ setIsProfileModalOpen }) {
     }
 
     // 유저 정보 수정 
-    const handleProfileSave = async (event) => {
+    const handleProfileSave = async () => {
         // image 파일을 Supabase storage에 업로드
-        const uploadedUrl = await uploadProfileImage({file, userId});
-        fetchUpdateUserData({ userId, name, introduce, uploadedUrl })
+        const uploadedUrl = await uploadProfileImage({ file, userId });
+        fetchUpdateUserData({ userId, name, introduce, uploadedUrl });
+        toast.success('프로필이 수정되었습니다.');
+        setIsProfileModalOpen(false);
     }
 
     const handleImageDelete = () => {
