@@ -31,17 +31,17 @@ const HeaderRight = ({ loginUser }) => {
     <HeaderRightDiv>
       {loginUser ? (
         <>
-          <Link to={`/PostEdit`}>
+          <Link to={`/postEdit`}>
             <ButtonPrimary>새 글 작성</ButtonPrimary>
           </Link>
-          <Link to={`/MyPage/${loginUser.id}`}>
+          <Link to={`/myPage/${loginUser.id}`}>
             <ProfileSmall profileImage={profileImage} />
           </Link>
         </>
       ) : (
         <>
-          <Link to={`/Login`}>Login</Link>
-          <Link to={`/SignUp`}>Sign Up</Link>
+          <Link to={`/login`}>Login</Link>
+          <Link to={`/signUp`}>Sign Up</Link>
         </>
       )}
     </HeaderRightDiv>
