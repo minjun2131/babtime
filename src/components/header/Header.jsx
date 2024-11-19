@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { color } from '../../configurations/Color';
 import Search from './Search';
 import HeaderRight from './HeaderRight';
+import { useEffect, useState } from 'react';
+import { supabase } from '../../services/supabase.js';
 
 const HeaderStyle = styled.header`
   position: fixed;
@@ -36,7 +38,23 @@ const Inner = styled.div`
 `;
 
 const Header = () => {
-  const hasUserInfo = true; // 나중에 전역 상태로
+  const [hasUserInfo, setHasUserInfo] = useState(false);
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data, error } = await supabase.auth.getUser();
+
+      if (error) {
+        console.error('Error fetching user:', error.message);
+        return;
+      }
+
+      setHasUserInfo(!!data.user); // user가 존재하면 true로 설정
+    };
+
+    checkUser();
+  }, []);
+
   return (
     <HeaderStyle>
       <Inner>
