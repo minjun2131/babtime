@@ -1,39 +1,69 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { StyledModalWrapper, StyledModalContent, StyledModalCloseBtn, StyledModalTitle, StyledModalBtnWrapper, StyledModalInputWrapper, StyledModalInput, StyledMyPageBtn } from "../../styles/MyPageStyle"
-import { updateProfileImage, uploadProfileImage } from '../../api/profileImage';
+import { uploadProfileImage } from '../../api/fetchProfileImage';
+import { fetchGetUserData, fetchUpdateUserData } from '../../api/fetchUserData';
+import { useNavigate } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
-function MyPageProfileEdit({ setIsProfileModalOpen }) {
-    const [profileImage, setProfileImage] = useState(null);
+function MyPageProfileEdit({ setIsProfileModalOpen, paramUser, loginUser, triggerReload }) {
     const fileInputRef = useRef();
-    const userId = '6b94b3d6-ec1e-43fb-8561-2e21f1e9f2d8'; // test 계정
+    const [previewUrl, setPreviewUrl] = useState(null);
+    const [profileImage, setProfileImage] = useState(null);
+    const [file, setFile] = useState(null); // file 상태 추가
+    const [name, setName] = useState(""); // 이름 상태
+    const [introduce, setIntroduce] = useState(""); // 소개 상태
+    const userId = paramUser.id && loginUser.id; // 로그인 유저 id
+    const navigate = useNavigate();
+
+    // Supabase에서 사용자 정보 가져오기
+    useEffect(() => {
+        fetchGetUserData({ setName, setIntroduce, setProfileImage, userId });
+
+        return () => {
+            if (previewUrl) URL.revokeObjectURL(previewUrl);
+        };
+    }, []);
 
     const handleSelectImage = () => {
         fileInputRef.current.click();
     }
 
-    const handleImageFileChange = async (event) => {
-        const file = event.target.files[0];
-        if (file) {
+    // 이미지 버튼 
+    const handleImageFileChange = (event) => {
+        const selectedFile = event.target.files[0];
+        if (selectedFile) {
             // 이미지 미리보기 URL 생성
-            const previewUrl = URL.createObjectURL(file);
-            setProfileImage(previewUrl);
-
-            // 파일을 Supabase에 업로드
-            const uploadedUrl = await uploadProfileImage(file, userId);
-            console.log("업로드된 이미지 URL:", uploadedUrl);
-
-            // DB에 업로드된 URL 저장
-            if (uploadedUrl) {
-                await updateProfileImage({ img_url: uploadedUrl, userId: userId });
-            }
+            if (previewUrl) URL.revokeObjectURL(previewUrl);
+            const newPreviewUrl = URL.createObjectURL(selectedFile);
+            setPreviewUrl(newPreviewUrl);
+            setProfileImage(newPreviewUrl);
+            setFile(selectedFile);
         }
+    }
+    
+    // 유저 정보 수정 
+    const handleProfileSave = async () => {
+        // image 파일을 Supabase storage에 업로드
+        const uploadedUrl = await uploadProfileImage({ file, userId });
+        fetchUpdateUserData({ userId, name, introduce, uploadedUrl });
+        toast.success('프로필이 수정되었습니다.');
+        triggerReload();
+        setIsProfileModalOpen(false);
+    }
+
+    const handleImageDelete = () => {
+        setProfileImage(null); // 프로필 이미지 URL 초기화
+        setPreviewUrl(null); // 미리보기 URL 초기화
+        setFile(null); // 선택된 파일 초기화
+        fileInputRef.current.value = null; // 파일 입력 필드 초기화
     }
 
     return (
         <StyledModalWrapper>
             <StyledModalContent>
                 <StyledModalTitle>프로필 수정</StyledModalTitle>
-                <img src="/images/user.svg" alt="user Image" />
+                <img src={profileImage || "/images/user.svg"} alt="user Image" />
                 {/* 숨겨진 파일 입력 필드 */}
                 <input
                     type="file"
@@ -44,14 +74,14 @@ function MyPageProfileEdit({ setIsProfileModalOpen }) {
                 />
                 <StyledModalBtnWrapper>
                     <StyledMyPageBtn onClick={handleSelectImage}>사진 변경</StyledMyPageBtn>
-                    <StyledMyPageBtn>사진 삭제</StyledMyPageBtn>
+                    <StyledMyPageBtn onClick={handleImageDelete}>사진 삭제</StyledMyPageBtn>
                 </StyledModalBtnWrapper>
                 <StyledModalInputWrapper>
-                    <StyledModalInput placeholder="닉네임"></StyledModalInput>
-                    <StyledModalInput placeholder="자기 소개"></StyledModalInput>
+                    <StyledModalInput placeholder="닉네임" value={name} onChange={(e) => setName(e.target.value)}></StyledModalInput>
+                    <StyledModalInput placeholder="자기 소개" value={introduce} onChange={(e) => setIntroduce(e.target.value)}></StyledModalInput>
                 </StyledModalInputWrapper>
-                <StyledMyPageBtn $width="350px" $bgcolor="#FFB879" $border="#FFB879" $color="white">저장</StyledMyPageBtn>
-                <StyledModalCloseBtn onClick={() => { setIsProfileModalOpen(false) }}>&times;</StyledModalCloseBtn>
+                <StyledMyPageBtn $width="350px" $bgcolor="#FFB879" $border="#FFB879" $color="white" onClick={handleProfileSave}>저장</StyledMyPageBtn>
+                <StyledModalCloseBtn onClick={() => setIsProfileModalOpen(false)}>&times;</StyledModalCloseBtn>
             </StyledModalContent>
         </StyledModalWrapper>
 
