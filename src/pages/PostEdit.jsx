@@ -140,7 +140,7 @@ const PostEdit = () => {
     }
 
     resetForm();
-    nav('/main');
+    nav('/');
   };
 
   const resetForm = () => {

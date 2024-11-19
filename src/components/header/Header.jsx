@@ -33,11 +33,11 @@ const Header = ({ searchTerm, setSearchTerm }) => {
     <HeaderWrap>
       <Inner>
         <h1>
-          <Link to={`/Main`}>
+          <Link to={`/`}>
             <img src="../images/logo_horizontal.svg" alt="밥타임" />
           </Link>
         </h1>
-        {location.pathname === '/Main' && ( // 경로가 /main일 때만 Search 컴포넌트 렌더링
+        {location.pathname === '/' && ( // 경로가 /main일 때만 Search 컴포넌트 렌더링
           <Search placeholderText="제목으로 검색" value={searchTerm} onChange={handleSearchChange} />
         )}
 
