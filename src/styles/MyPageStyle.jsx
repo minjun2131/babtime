@@ -15,7 +15,6 @@ export const StyledMypageWrapper = styled.div`
 `
 
 export const StyledMyPageProfileWrapper = styled.div`
-    border: 1px solid green;
     margin: 100px 0 100px 0; /* 유저 프로필 영역 위 아래 마진 */
     
     display: flex;
@@ -65,8 +64,6 @@ export const StyledLogoutButton = styled.button`
 
 /* MyPageMyPostList Style */
 export const StyledMyPagePostSection = styled.div`
-    border: 1px solid green;
-    
     display: flex;
     flex-direction: column;
     margin-bottom: 50px;
