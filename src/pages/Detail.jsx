@@ -7,6 +7,7 @@ import { ButtonContainer, CommentContainer, DetailContainer, Wrap } from '../sty
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { supabase } from '../services/supabase';
+import { toast } from 'react-toastify';
 
 const Detail = () => {
   const navigate = useNavigate();
@@ -60,7 +61,10 @@ const Detail = () => {
     const { error } = await supabase.from('posts').delete().eq('id', post.id);
 
     if (error) console.log(error);
-    else navigate('/');
+    else {
+      navigate('/');
+      toast.success('게시글이 성공적으로 삭제되었습니다.');
+    }
   };
 
   /* 댓글 등록 이벤트 */
