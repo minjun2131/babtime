@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import Header from '../components/header/Header.jsx';
 import { Inner, MainVisual, IntroTitle } from '../styles/MainStyle.jsx';
 import PostList from '../components/main/PostList.jsx';
