@@ -7,6 +7,7 @@ import { ButtonContainer, CommentContainer, DetailContainer, Wrap } from '../sty
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { supabase } from '../services/supabase';
+import { toast } from 'react-toastify';
 
 const Detail = () => {
   const navigate = useNavigate();
@@ -60,11 +61,26 @@ const Detail = () => {
     const { error } = await supabase.from('posts').delete().eq('id', post.id);
 
     if (error) console.log(error);
-    else navigate('/');
+    else {
+      navigate('/');
+      toast.success('게시글이 성공적으로 삭제되었습니다.');
+    }
   };
 
   /* 댓글 등록 이벤트 */
   const handleAddComment = async (value) => {
+    // 로그인 정보가 없는 경우
+    if (!user) {
+      toast.error('로그인 후 이용 가능합니다.');
+      return;
+    }
+
+    // 입력 값이 빈 값이 경우
+    if (!value) {
+      toast.error('댓글을 입력해 주세요.');
+      return;
+    }
+
     const { addError } = await supabase.from('comments').insert({ content: value, user_id: user.id, post_id: post.id });
 
     if (addError) console.log(addError);
@@ -87,7 +103,7 @@ const Detail = () => {
           <Header />
           <DetailContainer>
             <PostDetail user={user} post={post} />
-            {user.id === post.user_id && (
+            {user?.id === post.user_id && (
               <ButtonContainer>
                 <Button label="수정" handleClick={() => navigate(`/postedit/${post.id}`)} />
                 <Button category="sub" label="삭제" handleClick={handleDeletePost} />
