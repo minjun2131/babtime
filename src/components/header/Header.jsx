@@ -1,44 +1,33 @@
-import styled from 'styled-components';
-import { color } from '../../configurations/Color';
 import Search from './Search';
 import HeaderRight from './HeaderRight';
+import { useEffect, useState } from 'react';
+import { supabase } from '../../services/supabase.js';
+import { HeaderWrap, Inner } from '../../styles/HeaderStyle.jsx';
 
-const HeaderStyle = styled.header`
-  position: fixed;
-  z-index: 99;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 90px;
-  padding: 0 40px;
-  background: ${color.white};
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
+const Header = ({ searchTerm, setSearchTerm }) => {
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
-  & > div {
-    height: inherit;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  h1 {
-    width: 150px;
-  }
-  img {
-    max-width: 100%;
-    vertical-align: middle;
-  }
-`;
+  const [hasUserInfo, setHasUserInfo] = useState(false);
 
-//월요일에 글로벌 스타일로 이동
-const Inner = styled.div`
-  width: 1200px;
-  margin: 0 auto;
-`;
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data, error } = await supabase.auth.getUser();
 
-const Header = () => {
-  const hasUserInfo = true; // 나중에 전역 상태로
+      if (error) {
+        console.error('Error fetching user:', error.message);
+        return;
+      }
+
+      setHasUserInfo(!!data.user);
+    };
+
+    checkUser();
+  }, []);
+
   return (
-    <HeaderStyle>
+    <HeaderWrap>
       <Inner>
         <h1>
           <a href="/">
@@ -46,11 +35,11 @@ const Header = () => {
           </a>
         </h1>
 
-        <Search placeholderText="검색어를 입력해주세요." />
+        <Search placeholderText="제목으로 검색" value={searchTerm} onChange={handleSearchChange} />
 
         <HeaderRight hasUserInfo={hasUserInfo} />
       </Inner>
-    </HeaderStyle>
+    </HeaderWrap>
   );
 };
 

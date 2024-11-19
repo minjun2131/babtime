@@ -64,7 +64,7 @@ export const PostBoxTop = styled.article`
 export const Writer = styled.p`
   font-weight: 700;
 `;
-export const Date = styled.p`
+export const StyledDate = styled.p`
   color: ${color.gray};
   margin-top: 10px;
 `;
@@ -74,7 +74,7 @@ export const PostBoxBtm = styled.article`
     width: 100%;
     height: 200px;
     overflow: hidden;
-    background-image: url(${(props) => (props.imageUrl ? props.imageUrl : '../public/images/noimg.svg')});
+    background-image: url(${(props) => (props.image ? props.image : '../public/images/noimg.svg')});
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

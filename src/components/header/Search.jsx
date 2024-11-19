@@ -1,47 +1,16 @@
-import { useState } from 'react';
-import styled from 'styled-components';
+import { SearchWrap } from '../../styles/HeaderStyle.jsx';
 
-const SearchWrap = styled.form`
-  display: block;
-  width: 500px;
-  height: 40px;
-  position: relative;
-
-  input {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    padding: 0 20px;
-    border: 0;
-    border-radius: 50px;
-    box-shadow: 0px 0px 10px #ffb879;
-    font-size: 16px;
-  }
-
-  button {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    border: 0;
-    background: none;
-  }
-`;
-
-const Search = ({ placeholderText }) => {
-  const [inputValue, setInputValue] = useState();
-
-  const handleChange = (e) => {
-    setInputValue(e.target.value);
-  };
-
+const Search = ({ placeholderText, value, onChange }) => {
   return (
     <SearchWrap>
-      <input type="text" placeholder={placeholderText} value={inputValue} onChange={handleChange} />
+      <input
+        type="text"
+        placeholder={placeholderText}
+        value={value} // 부모 컴포넌트에서 전달된 value 사용
+        onChange={onChange} // 부모 컴포넌트에서 전달된 onChange 사용
+      />
       <button type="submit">
-        <img src="../../images/search.svg" alt="" />
+        <img src="../../images/search.svg" alt="검색" />
       </button>
     </SearchWrap>
   );

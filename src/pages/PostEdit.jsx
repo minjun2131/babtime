@@ -12,8 +12,9 @@ import { toast } from 'react-toastify';
 
 const PostEdit = () => {
   const params = useParams();
-  const urlId = params.id;
-  const [isEdit, setIsEdit] = useState(false); // 수정 여부를 판별
+  const postId = params.id;
+  const [currentUser, setCurrentUser] = useState(null);
+  const [isEdit, setIsEdit] = useState(false);
   const [title, setTitle] = useState('');
   const [address, setAddress] = useState('');
   const [content, setContent] = useState('');
@@ -24,19 +25,18 @@ const PostEdit = () => {
 
   const categories = ['한식', '중식', '양식', '일식', '분식', '카페 / 베이커리'];
 
-  // 로그인 여부 확인
+  // 로그인 여부 확인 및 사용자 정보 가져오기
   useEffect(() => {
     const checkUser = async () => {
       const {
         data: { user }
       } = await supabase.auth.getUser();
-
-      // 로그인된 사용자가 없으면 로그인 페이지로 이동
       if (!user) {
         toast.info('로그인이 필요합니다.');
-        nav('/login'); // 로그인 페이지로 리다이렉트
+        nav('/login');
         return;
       }
+      setCurrentUser(user); // 현재 사용자 정보 저장
     };
 
     checkUser();
@@ -45,19 +45,14 @@ const PostEdit = () => {
   // 기존 게시물 데이터를 불러오기
   useEffect(() => {
     const fetchPost = async () => {
-      if (urlId) {
-        const { data, error } = await supabase.from('posts').select('*').eq('id', urlId).single();
+      if (postId && currentUser) {
+        const { data, error } = await supabase.from('posts').select('*').eq('id', postId).single();
         if (error) {
           console.error('Error fetching post:', error.message);
           return;
         }
         if (data) {
-          const {
-            data: { user }
-          } = await supabase.auth.getUser();
-
-          if (data.user_id !== user.id) {
-            toast.warn('게시글을 수정할 권한이 없습니다.');
+          if (data.user_id !== currentUser.id) {
             nav(-1);
             return;
           }
@@ -71,24 +66,13 @@ const PostEdit = () => {
         }
       }
     };
-    fetchPost();
-  }, [urlId, nav]);
 
-  // 파일 이름 생성
-  const generateFileName = (file) => {
-    const timestamp = Date.now();
-    const sanitizedFileName = file.name
-      .toLowerCase()
-      .replace(/[^a-z0-9]/g, '-')
-      .replace(/-+/g, '-')
-      .replace(/(^-|-$)/g, '');
-    return `${timestamp}-${sanitizedFileName}`;
-  };
+    fetchPost();
+  }, [postId, nav, currentUser]);
 
   // 이미지 업로드
   const uploadImage = async (file) => {
-    const fileName = generateFileName(file);
-    const { data, error } = await supabase.storage.from('images').upload(fileName, file);
+    const { data, error } = await supabase.storage.from('images').upload(file.name, file);
 
     if (error) {
       console.error('Error uploading image:', error.message);
@@ -115,9 +99,11 @@ const PostEdit = () => {
 
   // 등록 또는 수정 로직
   const handleSubmit = async () => {
-    const {
-      data: { user }
-    } = await supabase.auth.getUser();
+    if (!currentUser) {
+      toast.error('로그인이 필요합니다.');
+      return;
+    }
+
     if (!title || !address || !selectedCategory || !content) {
       toast.error('모든 정보를 입력해주세요.');
       return;
@@ -130,12 +116,11 @@ const PostEdit = () => {
       category: selectedCategory,
       rating,
       image_url: image,
-      user_id: user.id // 로그인된 사용자의 id
+      user_id: currentUser.id
     };
 
-    // 데이터 있을시 수정.
     if (isEdit) {
-      const numericId = parseInt(urlId, 10);
+      const numericId = parseInt(postId, 10);
       const { error } = await supabase.from('posts').update(post).eq('id', numericId).select();
       if (error) {
         console.error('Error updating post:', error.message);
@@ -144,7 +129,6 @@ const PostEdit = () => {
       }
       toast.success('게시글이 성공적으로 수정되었습니다.');
     } else {
-      // 데이터 없을시 등록.
       const { error } = await supabase.from('posts').insert(post).select();
 
       if (error) {
