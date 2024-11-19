@@ -8,6 +8,7 @@ import RatingSelector from '../components/postedit/RatingSelector';
 import { Container, ButtonGroup, SubmitButton, CancelButton } from '../styles/PostEditStyle';
 import { useNavigate, useParams } from 'react-router-dom';
 import { supabase } from '../services/supabase';
+import { toast } from 'react-toastify';
 
 const PostEdit = () => {
   const params = useParams();
@@ -32,7 +33,7 @@ const PostEdit = () => {
 
       // 로그인된 사용자가 없으면 로그인 페이지로 이동
       if (!user) {
-        alert('로그인이 필요합니다.');
+        toast.info('로그인이 필요합니다.');
         nav('/login'); // 로그인 페이지로 리다이렉트
         return;
       }
@@ -56,7 +57,7 @@ const PostEdit = () => {
           } = await supabase.auth.getUser();
 
           if (data.user_id !== user.id) {
-            alert('게시글을 수정할 권한이 없습니다.');
+            toast.warn('게시글을 수정할 권한이 없습니다.');
             nav(-1);
             return;
           }
@@ -118,7 +119,7 @@ const PostEdit = () => {
       data: { user }
     } = await supabase.auth.getUser();
     if (!title || !address || !selectedCategory || !content) {
-      alert('모든 필드를 입력해주세요.');
+      toast.error('모든 정보를 입력해주세요.');
       return;
     }
 
@@ -138,20 +139,20 @@ const PostEdit = () => {
       const { error } = await supabase.from('posts').update(post).eq('id', numericId).select();
       if (error) {
         console.error('Error updating post:', error.message);
-        alert('게시글 수정에 실패했습니다.');
+        toast.error('게시글 수정에 실패했습니다.');
         return;
       }
-      alert('게시글이 성공적으로 수정되었습니다.');
+      toast.success('게시글이 성공적으로 수정되었습니다.');
     } else {
       // 데이터 없을시 등록.
       const { error } = await supabase.from('posts').insert(post).select();
 
       if (error) {
         console.error('Error inserting post:', error.message);
-        alert('게시글 등록에 실패했습니다.');
+        toast.error('게시글 등록에 실패했습니다.');
         return;
       }
-      alert('게시글이 성공적으로 등록되었습니다.');
+      toast.success('게시글이 성공적으로 등록되었습니다.');
     }
 
     resetForm();
