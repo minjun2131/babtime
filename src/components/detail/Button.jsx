@@ -11,6 +11,7 @@ const Container = styled.button`
     ${typography.title3};
     color: ${$category === 'main' ? color.white : '#FFB879'};
     padding: 10px;
+    cursor: pointer;
   `}
 `;
 

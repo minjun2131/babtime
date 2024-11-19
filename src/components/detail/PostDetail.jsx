@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { typography } from '../../configurations/Typography';
 import { color } from '../../configurations/Color';
 import Like from './Like';
+import NoImage from '/images/noimg.svg';
 
 const Container = styled.div`
   display: flex;
@@ -64,10 +65,10 @@ const RowContent = styled.p`
   color: ${color.black};
 `;
 
-const PostDetail = ({ post }) => {
+const PostDetail = ({ user, post }) => {
   return (
     <Container>
-      <Image src="/images/thumbnail_sample.png" alt="image" />
+      <Image src={post.image_url ?? NoImage} alt="image" />
       <InfoContainer>
         <TitleContainer>
           <Title>{post.title}</Title>
@@ -75,7 +76,7 @@ const PostDetail = ({ post }) => {
             <Icon>★</Icon>
             <Rating>{post.rating}</Rating>
           </RatingContainer>
-          <Like />
+          {user && user.id !== post.user_id && <Like userId={user.id} postId={post.id} />}
         </TitleContainer>
         <RowContainer>
           <RowTitle>주소</RowTitle>
