@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { usePostEdit } from '../hooks/usePostEdit';
 import Header from '../components/header/Header';
 import ImageUploader from '../components/postedit/ImageUploader';
 import TextInput from '../components/postedit/TextInput';
@@ -6,176 +7,94 @@ import CategorySelector from '../components/postedit/CategorySelector';
 import TextAreaInput from '../components/postedit/TextAreaInput';
 import RatingSelector from '../components/postedit/RatingSelector';
 import { Container, ButtonGroup, SubmitButton, CancelButton } from '../styles/PostEditStyle';
-import { useNavigate, useParams } from 'react-router-dom';
 import { supabase } from '../services/supabase';
 import { toast } from 'react-toastify';
 
 const PostEdit = () => {
-  const params = useParams();
-  const postId = params.id;
-  const [currentUser, setCurrentUser] = useState(null);
-  const [isEdit, setIsEdit] = useState(false);
-  const [title, setTitle] = useState('');
-  const [address, setAddress] = useState('');
-  const [content, setContent] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [rating, setRating] = useState(0);
-  const [image, setImage] = useState(null);
+  const { id: postId } = useParams();
+  const { currentUser, post, setPost, isEdit } = usePostEdit(postId);
   const nav = useNavigate();
 
   const categories = ['한식', '중식', '양식', '일식', '분식', '카페 / 베이커리'];
 
-  // 로그인 여부 확인 및 사용자 정보 가져오기
-  useEffect(() => {
-    const checkUser = async () => {
-      const {
-        data: { user }
-      } = await supabase.auth.getUser();
-      if (!user) {
-        toast.info('로그인이 필요합니다.');
-        nav('/login');
-        return;
-      }
-      setCurrentUser(user); // 현재 사용자 정보 저장
-    };
-
-    checkUser();
-  }, [nav]);
-
-  // 기존 게시물 데이터를 불러오기
-  useEffect(() => {
-    const fetchPost = async () => {
-      if (postId && currentUser) {
-        const { data, error } = await supabase.from('posts').select('*').eq('id', postId).single();
-        if (error) {
-          console.error('Error fetching post:', error.message);
-          return;
-        }
-        if (data) {
-          if (data.user_id !== currentUser.id) {
-            nav(-1);
-            return;
-          }
-          setTitle(data.title);
-          setAddress(data.location);
-          setContent(data.description);
-          setSelectedCategory(data.category);
-          setRating(data.rating);
-          setImage(data.image_url);
-          setIsEdit(true);
-        }
-      }
-    };
-
-    fetchPost();
-  }, [postId, nav, currentUser]);
-
-  // 이미지 업로드
-  const uploadImage = async (file) => {
+  const handleImageUpload = async (file) => {
     const { data, error } = await supabase.storage.from('images').upload(file.name, file);
-
     if (error) {
       console.error('Error uploading image:', error.message);
       return null;
     }
-
     return supabase.storage.from('images').getPublicUrl(data.path).publicUrl;
   };
 
-  const handleImageUpload = async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = () => setImage(reader.result);
-    reader.readAsDataURL(file);
-
-    const imageUrl = await uploadImage(file);
-    if (imageUrl) {
-      setImage(imageUrl);
-    }
-    event.target.value = null;
-  };
-
-  // 등록 또는 수정 로직
   const handleSubmit = async () => {
     if (!currentUser) {
       toast.error('로그인이 필요합니다.');
       return;
     }
-
-    if (!title || !address || !selectedCategory || !content) {
+    if (!post.title || !post.location || !post.category || !post.description) {
       toast.error('모든 정보를 입력해주세요.');
       return;
     }
 
-    const post = {
-      title,
-      location: address,
-      description: content,
-      category: selectedCategory,
-      rating,
-      image_url: image,
-      user_id: currentUser.id
-    };
+    const postPayload = { ...post, user_id: currentUser.id };
 
-    if (isEdit) {
-      const numericId = parseInt(postId, 10);
-      const { error } = await supabase.from('posts').update(post).eq('id', numericId).select();
-      if (error) {
-        console.error('Error updating post:', error.message);
-        toast.error('게시글 수정에 실패했습니다.');
-        return;
+    try {
+      if (isEdit) {
+        await supabase.from('posts').update(postPayload).eq('id', postId);
+        toast.success('게시글이 성공적으로 수정되었습니다.');
+        nav(-1);
+      } else {
+        await supabase.from('posts').insert(postPayload);
+        toast.success('게시글이 성공적으로 등록되었습니다.');
+        nav('/');
       }
-      toast.success('게시글이 성공적으로 수정되었습니다.');
-    } else {
-      const { error } = await supabase.from('posts').insert(post).select();
-
-      if (error) {
-        console.error('Error inserting post:', error.message);
-        toast.error('게시글 등록에 실패했습니다.');
-        return;
-      }
-      toast.success('게시글이 성공적으로 등록되었습니다.');
+    } catch (error) {
+      console.error('Error saving post:', error.message);
+      toast.error('게시글 저장에 실패했습니다.');
     }
-
-    resetForm();
-    nav('/');
-  };
-
-  const resetForm = () => {
-    setTitle('');
-    setAddress('');
-    setContent('');
-    setSelectedCategory('');
-    setRating(0);
-    setImage(null);
   };
 
   return (
     <>
       <Header />
       <Container>
-        <ImageUploader image={image} onUpload={handleImageUpload} onDelete={() => setImage(null)} />
-        <TextInput label="제목" placeholder="제목을 입력해주세요." value={title} onChange={setTitle} />
-        <TextInput label="주소" placeholder="주소를 입력해주세요." value={address} onChange={setAddress} />
+        <ImageUploader
+          image={post.image_url}
+          onUpload={async (file) => {
+            const url = await handleImageUpload(file);
+            setPost((prev) => ({ ...prev, image_url: url }));
+          }}
+          onDelete={() => setPost((prev) => ({ ...prev, image_url: null }))}
+        />
+        <TextInput
+          label="제목"
+          placeholder="제목을 입력해주세요."
+          value={post.title}
+          onChange={(value) => setPost((prev) => ({ ...prev, title: value }))}
+        />
+        <TextInput
+          label="주소"
+          placeholder="주소를 입력해주세요."
+          value={post.location}
+          onChange={(value) => setPost((prev) => ({ ...prev, location: value }))}
+        />
         <CategorySelector
           categories={categories}
-          selectedCategory={selectedCategory}
-          onCategoryClick={(category) => setSelectedCategory(selectedCategory === category ? '' : category)}
+          selectedCategory={post.category}
+          onCategoryClick={(category) =>
+            setPost((prev) => ({ ...prev, category: prev.category === category ? '' : category }))
+          }
         />
-        <TextAreaInput label="내용" placeholder="내용을 입력해주세요." value={content} onChange={setContent} />
-        <RatingSelector rating={rating} onRatingClick={setRating} />
+        <TextAreaInput
+          label="내용"
+          placeholder="내용을 입력해주세요."
+          value={post.description}
+          onChange={(value) => setPost((prev) => ({ ...prev, description: value }))}
+        />
+        <RatingSelector rating={post.rating} onRatingClick={(rating) => setPost((prev) => ({ ...prev, rating }))} />
         <ButtonGroup>
           <SubmitButton onClick={handleSubmit}>{isEdit ? '수정' : '등록'}</SubmitButton>
-          <CancelButton
-            onClick={() => {
-              nav(-1);
-              resetForm();
-            }}
-          >
-            취소
-          </CancelButton>
+          <CancelButton onClick={() => nav(-1)}>취소</CancelButton>
         </ButtonGroup>
       </Container>
     </>
