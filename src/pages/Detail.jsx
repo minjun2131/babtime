@@ -11,13 +11,26 @@ import { supabase } from '../services/supabase';
 const Detail = () => {
   const param = useParams();
 
+  const [user, setUser] = useState();
   const [post, setPost] = useState();
 
+  /* 로그인한 유저 정보 가져오기 */
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data } = await supabase.auth.getUser();
+
+      setUser(data.user);
+    };
+
+    fetchUser();
+  }, []);
+
+  /* 게시글 상세 정보 가져오기 */
   useEffect(() => {
     const fetchData = async () => {
       const { data, error } = await supabase.from('posts').select('*').eq('id', param.id);
 
-      if (error) console.log('error => ', error);
+      if (error) window.alert('오류가 발생했습니다.');
       else setPost(data[0]);
     };
 
@@ -30,11 +43,13 @@ const Detail = () => {
         <Wrap>
           <Header />
           <DetailContainer>
-            <PostDetail post={post} />
-            <ButtonContainer>
-              <Button label="수정" handleClick={() => {}} />
-              <Button category="sub" label="삭제" handleClick={() => {}} />
-            </ButtonContainer>
+            <PostDetail user={user} post={post} />
+            {user.id === post.user_id && (
+              <ButtonContainer>
+                <Button label="수정" handleClick={() => {}} />
+                <Button category="sub" label="삭제" handleClick={() => {}} />
+              </ButtonContainer>
+            )}
           </DetailContainer>
           <CommentContainer>
             <CommentForm />
