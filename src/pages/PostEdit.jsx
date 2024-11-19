@@ -1,22 +1,13 @@
-import { useState } from 'react';
-import Header from '../components/Header';
-import {
-  Container,
-  ImageUpload,
-  ImagePlaceholder,
-  ButtonGroup,
-  Button,
-  InputContainer,
-  Label,
-  Input,
-  TextArea,
-  CategoryContainer,
-  CategoryItem,
-  RatingContainer,
-  Star,
-  SubmitButton,
-  CancelButton
-} from '../components/PostEditor/PostEditorStyle';
+import { useState, useEffect } from 'react';
+import Header from '../components/header/Header';
+import ImageUploader from '../components/postedit/ImageUploader';
+import TextInput from '../components/postedit/TextInput';
+import CategorySelector from '../components/postedit/CategorySelector';
+import TextAreaInput from '../components/postedit/TextAreaInput';
+import RatingSelector from '../components/postedit/RatingSelector';
+import { Container, ButtonGroup, SubmitButton, CancelButton } from '../styles/PostEditStyle';
+import { useNavigate, useParams } from 'react-router-dom';
+import { supabase } from '../services/supabase';
 
 const PostEdit = () => {
   const params = useParams();
