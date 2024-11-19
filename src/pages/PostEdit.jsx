@@ -1,4 +1,9 @@
+<<<<<<< HEAD
+import { useState } from 'react';
+
+=======
 import { useState, useEffect } from 'react';
+>>>>>>> 7e0556b9c2cf8aec42fc19326befb15b5c269532
 import Header from '../components/header/Header';
 import ImageUploader from '../components/postedit/ImageUploader';
 import TextInput from '../components/postedit/TextInput';
