@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { color } from '../../configurations/Color';
 import { typography } from '../../configurations/Typography';
+import { useState } from 'react';
 
 const Container = styled.form`
   display: flex;
@@ -33,13 +34,26 @@ const Button = styled.button`
   border-radius: 5px;
   ${typography.title3};
   color: ${color.white};
+  cursor: pointer;
 `;
 
-const CommentForm = () => {
+const CommentForm = ({ handleSubmit }) => {
+  const [comment, setComment] = useState('');
+
   return (
-    <Container>
-      <Textarea placeholder="댓글을 작성해 주세요."></Textarea>
-      <Button type="button">등록</Button>
+    <Container
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSubmit(comment);
+        setComment('');
+      }}
+    >
+      <Textarea
+        placeholder="댓글을 작성해 주세요."
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
+      ></Textarea>
+      <Button type="submit">등록</Button>
     </Container>
   );
 };
