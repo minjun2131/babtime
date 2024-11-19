@@ -69,6 +69,18 @@ const Detail = () => {
 
   /* 댓글 등록 이벤트 */
   const handleAddComment = async (value) => {
+    // 로그인 정보가 없는 경우
+    if (!user) {
+      toast.error('로그인 후 이용 가능합니다.');
+      return;
+    }
+
+    // 입력 값이 빈 값이 경우
+    if (!value) {
+      toast.error('댓글을 입력해 주세요.');
+      return;
+    }
+
     const { addError } = await supabase.from('comments').insert({ content: value, user_id: user.id, post_id: post.id });
 
     if (addError) console.log(addError);
