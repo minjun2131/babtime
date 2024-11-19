@@ -22,7 +22,7 @@ export const IntroTitle = styled.p`
 `;
 
 export const PostUl = styled.ul`
-  padding: 50px 0 200px;
+  padding: 50px 0 80px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 60px;

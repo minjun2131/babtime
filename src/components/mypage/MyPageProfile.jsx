@@ -11,15 +11,10 @@ import MyPagePwdEdit from './MyPagePwdEdit';
 import { supabase } from '../../services/supabase';
 import { useNavigate } from 'react-router-dom';
 
-function MyPageProfile() {
+function MyPageProfile({ paramUser, loginUser }) {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false); // 모달 열기/닫기 상태 관리
   const [isPwdModalOpen, setIsPwdModalOpen] = useState(false); // 모달 열기/닫기 상태 관리
   const nav = useNavigate();
-
-  //   const handleSaveProfile = () => {
-  //     console.log('프로필이 업데이트되었습니다.');
-  //     setIsProfileModalOpen(false); // 프로필을 저장한 후 모달 닫기
-  //   };
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -36,17 +31,18 @@ function MyPageProfile() {
 
         <StyledMyPageSection $width="950px" $padding="15px 0px 15px 30px">
           <StyledMyPageDetail $fontSize="25px" $fontWeight="700">
-            닉네임
+            {paramUser?.name}
           </StyledMyPageDetail>
-          <StyledMyPageDetail>자기 소개</StyledMyPageDetail>
+          <StyledMyPageDetail>{paramUser?.introduce || '자기소개가 없습니다'}</StyledMyPageDetail>
           <StyledMyPageDetail>
             <Button label="프로필 수정" handleClick={() => setIsProfileModalOpen(true)} />
             <Button category="sub" label="비밀번호 변경" handleClick={() => setIsPwdModalOpen(true)} />
           </StyledMyPageDetail>
         </StyledMyPageSection>
-
         <StyledMyPageSection>
-          <StyledLogoutButton onClick={handleLogout}>로그아웃</StyledLogoutButton>
+          {paramUser && loginUser && paramUser.id === loginUser.id && (
+            <StyledLogoutButton onClick={handleLogout}>로그아웃</StyledLogoutButton>
+          )}
         </StyledMyPageSection>
       </StyledMyPageProfileWrapper>
 

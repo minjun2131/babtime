@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { StyledMyPagePostSection, StyledMyPageTitle } from '../../styles/MyPageStyle';
 import PostList from '../main/PostList.jsx';
 
-function MyPageMyPostList() {
+const MyPageMyPostList = ({ paramUser, posts, loading, error }) => {
   return (
     <>
       <StyledMyPagePostSection>
-        <StyledMyPageTitle>나의 게시글</StyledMyPageTitle>
-        {/* <PostList /> */}
+        <StyledMyPageTitle>{paramUser && paramUser.name}님의 게시글</StyledMyPageTitle>
+        <PostList posts={posts} loading={loading} error={error} userInfo={paramUser} />
       </StyledMyPagePostSection>
     </>
   );
-}
+};
 
 export default MyPageMyPostList;

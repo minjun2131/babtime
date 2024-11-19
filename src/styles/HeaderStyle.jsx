@@ -61,3 +61,20 @@ export const SearchWrap = styled.form`
     background: none;
   }
 `;
+
+export const HeaderRightDiv = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+`;
+
+export const ButtonPrimary = styled.button`
+  display: inline-block;
+  background: ${color.white};
+  padding: 10px 20px;
+  color: ${color.primary};
+  border: 1px solid ${color.primary};
+  border-radius: 40px;
+  font-size: 16px;
+  cursor: pointer;
+`;

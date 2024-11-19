@@ -1,10 +1,60 @@
 import Header from '../components/header/Header.jsx';
 import { Inner, MainVisual, IntroTitle } from '../styles/MainStyle.jsx';
-import MainPost from '../components/main/MainPost.jsx';
-import { useState } from 'react';
+import PostList from '../components/main/PostList.jsx';
+import { supabase } from '../services/supabase.js';
+import React, { useEffect, useState } from 'react';
 
 const Main = () => {
   const [searchTerm, setSearchTerm] = useState('');
+
+  const [postData, setPostData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [filteredPosts, setFilteredPosts] = useState([]); // 검색 state
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data: posts, error: postError } = await supabase.from('posts').select('*');
+
+        if (postError) throw postError;
+
+        const userPromises = posts.map(async (post) => {
+          const { data: user, error: userError } = await supabase
+            .from('users')
+            .select('*')
+            .eq('id', post.user_id)
+            .single();
+
+          if (userError) {
+            console.error(`사용자 데이터 불러오기 실패 (user_id: ${post.user_id}):`, userError);
+            return null;
+          }
+
+          return { ...post, userName: user.name, userId: user.id };
+        });
+
+        const postsWithUserNames = await Promise.all(userPromises);
+        const validPosts = postsWithUserNames.filter((post) => post !== null);
+        const sortedPosts = validPosts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+        setPostData(sortedPosts);
+        setFilteredPosts(sortedPosts); // 초기 필터링된 게시물 설정
+      } catch (err) {
+        console.error('데이터 로딩 중 오류 발생:', err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const results = postData.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
+    setFilteredPosts(results);
+  }, [searchTerm, postData]);
 
   return (
     <>
@@ -13,7 +63,7 @@ const Main = () => {
       <Inner>
         <IntroTitle>다양한 맛집 리뷰를 확인해 보세요.</IntroTitle>
 
-        <MainPost searchTerm={searchTerm} />
+        <PostList posts={filteredPosts} loading={loading} error={error} />
       </Inner>
     </>
   );

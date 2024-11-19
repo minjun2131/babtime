@@ -76,7 +76,7 @@ const PostDetail = ({ user, post }) => {
             <Icon>★</Icon>
             <Rating>{post.rating}</Rating>
           </RatingContainer>
-          {user && user.id !== post.user_id && <Like userId={user.id} postId={post.id} />}
+          {user?.id !== post.user_id && <Like user={user} postId={post.id} />}
         </TitleContainer>
         <RowContainer>
           <RowTitle>주소</RowTitle>
