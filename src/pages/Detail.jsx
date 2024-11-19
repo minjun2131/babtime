@@ -91,7 +91,7 @@ const Detail = () => {
           <Header />
           <DetailContainer>
             <PostDetail user={user} post={post} />
-            {user.id === post.user_id && (
+            {user?.id === post.user_id && (
               <ButtonContainer>
                 <Button label="수정" handleClick={() => navigate(`/postedit/${post.id}`)} />
                 <Button category="sub" label="삭제" handleClick={handleDeletePost} />
