@@ -6,11 +6,12 @@ import CategorySelector from '../components/postedit/CategorySelector';
 import TextAreaInput from '../components/postedit/TextAreaInput';
 import RatingSelector from '../components/postedit/RatingSelector';
 import { Container, ButtonGroup, SubmitButton, CancelButton } from '../styles/PostEditStyle';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { supabase } from '../services/supabase';
 
 const PostEdit = () => {
-  const id = 17;
+  const params = useParams();
+  const urlId = params.id;
   const [isEdit, setIsEdit] = useState(false); // 수정 여부를 판별
   const [title, setTitle] = useState('');
   const [address, setAddress] = useState('');
@@ -25,8 +26,8 @@ const PostEdit = () => {
   // 기존 게시물 데이터를 불러오기
   useEffect(() => {
     const fetchPost = async () => {
-      if (id) {
-        const { data, error } = await supabase.from('posts').select('*').eq('id', id).single();
+      if (urlId) {
+        const { data, error } = await supabase.from('posts').select('*').eq('id', urlId).single();
         if (error) {
           console.error('Error fetching post:', error.message);
           return;
@@ -44,7 +45,7 @@ const PostEdit = () => {
       }
     };
     fetchPost();
-  }, [id]);
+  }, [urlId]);
 
   // 파일 이름 생성
   const generateFileName = (file) => {
@@ -87,6 +88,9 @@ const PostEdit = () => {
 
   // 등록 또는 수정 로직
   const handleSubmit = async () => {
+    const {
+      data: { user }
+    } = await supabase.auth.getUser();
     if (!title || !address || !selectedCategory || !content) {
       alert('모든 필드를 입력해주세요.');
       return;
@@ -99,12 +103,12 @@ const PostEdit = () => {
       category: selectedCategory,
       rating,
       image_url: image,
-      user_id: '6b94b3d6-ec1e-43fb-8561-2e21f1e9f2d8' // 실제 로그인 사용자 ID로 대체 필요
+      user_id: user.id // 로그인된 사용자의 id
     };
 
     // 데이터 있을시 수정.
     if (isEdit) {
-      const numericId = parseInt(id, 10);
+      const numericId = parseInt(urlId, 10);
       const { error } = await supabase.from('posts').update(post).eq('id', numericId).select();
       if (error) {
         console.error('Error updating post:', error.message);
@@ -125,7 +129,7 @@ const PostEdit = () => {
     }
 
     resetForm();
-    nav('/');
+    nav('/main');
   };
 
   const resetForm = () => {

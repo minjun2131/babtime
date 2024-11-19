@@ -18,6 +18,7 @@ function Router() {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/detail/:id" element={<Detail />} />
         <Route path="/postedit" element={<PostEdit />} />
+        <Route path="/postedit/:id" element={<PostEdit />} />
       </Routes>
     </BrowserRouter>
   );
