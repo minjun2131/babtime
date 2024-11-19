@@ -23,6 +23,24 @@ const PostEdit = () => {
 
   const categories = ['한식', '중식', '양식', '일식', '분식', '카페 / 베이커리'];
 
+  // 로그인 여부 확인
+  useEffect(() => {
+    const checkUser = async () => {
+      const {
+        data: { user }
+      } = await supabase.auth.getUser();
+
+      // 로그인된 사용자가 없으면 로그인 페이지로 이동
+      if (!user) {
+        alert('로그인이 필요합니다.');
+        nav('/login'); // 로그인 페이지로 리다이렉트
+        return;
+      }
+    };
+
+    checkUser();
+  }, [nav]);
+
   // 기존 게시물 데이터를 불러오기
   useEffect(() => {
     const fetchPost = async () => {
@@ -33,7 +51,15 @@ const PostEdit = () => {
           return;
         }
         if (data) {
-          // 게시물 데이터가 있으면 필드 채우기 및 수정 모드 활성화
+          const {
+            data: { user }
+          } = await supabase.auth.getUser();
+
+          if (data.user_id !== user.id) {
+            alert('게시글을 수정할 권한이 없습니다.');
+            nav(-1);
+            return;
+          }
           setTitle(data.title);
           setAddress(data.location);
           setContent(data.description);
@@ -45,7 +71,7 @@ const PostEdit = () => {
       }
     };
     fetchPost();
-  }, [urlId]);
+  }, [urlId, nav]);
 
   // 파일 이름 생성
   const generateFileName = (file) => {
