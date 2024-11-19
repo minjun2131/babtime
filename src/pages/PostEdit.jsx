@@ -128,6 +128,7 @@ const PostEdit = () => {
         return;
       }
       toast.success('게시글이 성공적으로 수정되었습니다.');
+      nav(-1);
     } else {
       const { error } = await supabase.from('posts').insert(post).select();
 

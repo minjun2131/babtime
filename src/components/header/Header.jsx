@@ -9,7 +9,6 @@ const Header = ({ searchTerm, setSearchTerm }) => {
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
-
   const location = useLocation();
 
   const [hasUserInfo, setHasUserInfo] = useState(false);
@@ -19,7 +18,7 @@ const Header = ({ searchTerm, setSearchTerm }) => {
       const { data, error } = await supabase.auth.getUser();
 
       if (error) {
-        console.error('Error fetching user:', error.message);
+        console.error('로그인 오류:', error.message);
         return;
       }
 
@@ -39,9 +38,7 @@ const Header = ({ searchTerm, setSearchTerm }) => {
             <img src="../images/logo_horizontal.svg" alt="밥타임" />
           </Link>
         </h1>
-        {isSearchVisible && (
-          <Search placeholderText="제목으로 검색" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-        )}
+        {isSearchVisible && <Search placeholderText="제목으로 검색" value={searchTerm} onChange={handleSearchChange} />}
 
         <HeaderRight hasUserInfo={hasUserInfo} />
       </Inner>

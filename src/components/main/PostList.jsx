@@ -3,10 +3,13 @@ import ProfileSmall from '../header/ProfileSmall.jsx';
 import { Link } from 'react-router-dom';
 import { PostUl, PostBoxTop, Writer, StyledDate, PostBoxBtm } from '../../styles/MainStyle.jsx';
 
-export const PostList = ({ lenderData }) => {
+export const PostList = ({ posts, loading, error, userInfo }) => {
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>데이터를 불러오는 데 문제가 발생했습니다.</div>;
+
   return (
     <PostUl>
-      {lenderData.map((post) => {
+      {posts.map((post) => {
         const formattedString = post.created_at.replace(/\.\d+/, '');
         const date = new Date(formattedString);
         const year = date.getFullYear();
@@ -20,7 +23,7 @@ export const PostList = ({ lenderData }) => {
               <Link to={`/MyPage`}></Link>
               <ProfileSmall></ProfileSmall>
               <div>
-                <Writer>{post.userName}</Writer>
+                <Writer>{userInfo ? userInfo.name : post.userName}</Writer>
                 <StyledDate>{formattedDate}</StyledDate>
               </div>
             </PostBoxTop>
