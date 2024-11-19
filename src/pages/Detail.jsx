@@ -60,7 +60,7 @@ const Detail = () => {
     const { error } = await supabase.from('posts').delete().eq('id', post.id);
 
     if (error) console.log(error);
-    else navigate('/main');
+    else navigate('/');
   };
 
   /* 댓글 등록 이벤트 */
