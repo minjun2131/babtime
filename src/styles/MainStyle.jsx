@@ -8,6 +8,11 @@ export const MainVisual = styled.section`
   background-size: cover;
 `;
 
+export const Inner = styled.div`
+  width: 1200px;
+  margin: 0 auto;
+`;
+
 export const IntroTitle = styled.p`
   margin-top: 100px;
   font-weight: 900;
@@ -16,7 +21,7 @@ export const IntroTitle = styled.p`
   color: ${color.black};
 `;
 
-export const FeedUl = styled.ul`
+export const PostUl = styled.ul`
   padding: 50px 0 200px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -49,7 +54,7 @@ export const FeedUl = styled.ul`
   }
 `;
 
-export const FeedLiTop = styled.article`
+export const PostBoxTop = styled.article`
   display: flex;
   align-items: center;
   gap: 20px;
@@ -64,11 +69,15 @@ export const Date = styled.p`
   margin-top: 10px;
 `;
 
-export const FeedLiBtm = styled.article`
+export const PostBoxBtm = styled.article`
   figure {
     width: 100%;
     height: 200px;
     overflow: hidden;
+    background-image: url(${(props) => (props.imageUrl ? props.imageUrl : '../public/images/noimg.svg')});
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 
   figure img {
