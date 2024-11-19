@@ -53,33 +53,21 @@ const Content = styled.p`
   color: ${color.black};
 `;
 
-const CommentList = () => {
+const CommentList = ({ comments }) => {
   return (
     <Container>
-      <CommentContainer>
-        <Profile src="/images/user.svg" alt="icon" />
-        <ContentContainer>
-          <UserContainer>
-            <Name>밥타임</Name>
-            <Date>2024-11-16</Date>
-          </UserContainer>
-          <Content>Lorem ipsum dolor sit amet consectetur.</Content>
-        </ContentContainer>
-      </CommentContainer>
-      <CommentContainer>
-        <Profile src="/images/user.svg" alt="icon" />
-        <ContentContainer>
-          <UserContainer>
-            <Name>밥타임</Name>
-            <Date>2024-11-16</Date>
-          </UserContainer>
-          <Content>
-            Lorem ipsum dolor sit amet consectetur. Non id neque at ornare ut habitasse tristique. Nibh placerat lectus
-            mollis purus praesent amet senectus tristique aliquam. Fringilla velit urna orci orci morbi sollicitudin
-            mauris elementum. Id vulputate vel commodo purus coodo
-          </Content>
-        </ContentContainer>
-      </CommentContainer>
+      {comments.map((comment) => (
+        <CommentContainer key={comment.id}>
+          <Profile src={comment.users.profile_image_url ?? '/images/user.svg'} alt="icon" />
+          <ContentContainer>
+            <UserContainer>
+              <Name>{comment.users.name}</Name>
+              <Date>{comment.created_at.slice(0, 10)}</Date>
+            </UserContainer>
+            <Content>{comment.content}</Content>
+          </ContentContainer>
+        </CommentContainer>
+      ))}
     </Container>
   );
 };
