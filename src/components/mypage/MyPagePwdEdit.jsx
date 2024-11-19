@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyledModalWrapper, StyledModalContent, StyledModalCloseBtn, StyledModalTitle, StyledModalSubTitle, StyledModalBtnWrapper, StyledModalInputWrapper, StyledModalInput, StyledMyPageBtn } from "../../styles/MyPageStyle"
 import { supabase } from '../../services/supabase';
 import 'react-toastify/dist/ReactToastify.css';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 function MyPagePwdEdit({ setIsPwdModalOpen }) {
     const [currentPwd, setCurrentPwd] = useState("");

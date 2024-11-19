@@ -166,6 +166,12 @@ export const StyledMyPageBtn = styled.button`
     color: ${(props) => props.$color || '#333'};
     padding: 10px;
     cursor: pointer;
+
+    &:hover {
+        color: white; /* 호버 시 색 변화 */
+        background-color: #333;
+        border: 1px solid #333;
+    }
 `
 
 export const StyledModalInputWrapper = styled.div`
