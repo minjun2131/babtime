@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Header from '../components/header/Header';
+import Header from '../components/Header';
 import {
   Container,
   ImageUpload,
@@ -16,74 +16,190 @@ import {
   Star,
   SubmitButton,
   CancelButton
-} from '../styles/PostEditorStyle';
+} from '../components/PostEditor/PostEditorStyle';
 
-const PostEdit = ({ initialData }) => {
-  const [selectedCategory, setSelectedCategory] = useState(initialData?.category || '');
-  const [rating, setRating] = useState(initialData?.rating || 0);
+const PostEdit = () => {
+  const params = useParams();
+  const urlId = params.id;
+  const [isEdit, setIsEdit] = useState(false); // 수정 여부를 판별
+  const [title, setTitle] = useState('');
+  const [address, setAddress] = useState('');
+  const [content, setContent] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [rating, setRating] = useState(0);
+  const [image, setImage] = useState(null);
+  const nav = useNavigate();
 
   const categories = ['한식', '중식', '양식', '일식', '분식', '카페 / 베이커리'];
 
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(selectedCategory === category ? '' : category);
+  // 로그인 여부 확인
+  useEffect(() => {
+    const checkUser = async () => {
+      const {
+        data: { user }
+      } = await supabase.auth.getUser();
+
+      // 로그인된 사용자가 없으면 로그인 페이지로 이동
+      if (!user) {
+        alert('로그인이 필요합니다.');
+        nav('/login'); // 로그인 페이지로 리다이렉트
+        return;
+      }
+    };
+
+    checkUser();
+  }, [nav]);
+
+  // 기존 게시물 데이터를 불러오기
+  useEffect(() => {
+    const fetchPost = async () => {
+      if (urlId) {
+        const { data, error } = await supabase.from('posts').select('*').eq('id', urlId).single();
+        if (error) {
+          console.error('Error fetching post:', error.message);
+          return;
+        }
+        if (data) {
+          const {
+            data: { user }
+          } = await supabase.auth.getUser();
+
+          if (data.user_id !== user.id) {
+            alert('게시글을 수정할 권한이 없습니다.');
+            nav(-1);
+            return;
+          }
+          setTitle(data.title);
+          setAddress(data.location);
+          setContent(data.description);
+          setSelectedCategory(data.category);
+          setRating(data.rating);
+          setImage(data.image_url);
+          setIsEdit(true);
+        }
+      }
+    };
+    fetchPost();
+  }, [urlId, nav]);
+
+  // 파일 이름 생성
+  const generateFileName = (file) => {
+    const timestamp = Date.now();
+    const sanitizedFileName = file.name
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/(^-|-$)/g, '');
+    return `${timestamp}-${sanitizedFileName}`;
   };
 
-  const handleRatingClick = (value) => {
-    setRating(value);
+  // 이미지 업로드
+  const uploadImage = async (file) => {
+    const fileName = generateFileName(file);
+    const { data, error } = await supabase.storage.from('images').upload(fileName, file);
+
+    if (error) {
+      console.error('Error uploading image:', error.message);
+      return null;
+    }
+
+    return supabase.storage.from('images').getPublicUrl(data.path).publicUrl;
+  };
+
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => setImage(reader.result);
+    reader.readAsDataURL(file);
+
+    const imageUrl = await uploadImage(file);
+    if (imageUrl) {
+      setImage(imageUrl);
+    }
+    event.target.value = null;
+  };
+
+  // 등록 또는 수정 로직
+  const handleSubmit = async () => {
+    const {
+      data: { user }
+    } = await supabase.auth.getUser();
+    if (!title || !address || !selectedCategory || !content) {
+      alert('모든 필드를 입력해주세요.');
+      return;
+    }
+
+    const post = {
+      title,
+      location: address,
+      description: content,
+      category: selectedCategory,
+      rating,
+      image_url: image,
+      user_id: user.id // 로그인된 사용자의 id
+    };
+
+    // 데이터 있을시 수정.
+    if (isEdit) {
+      const numericId = parseInt(urlId, 10);
+      const { error } = await supabase.from('posts').update(post).eq('id', numericId).select();
+      if (error) {
+        console.error('Error updating post:', error.message);
+        alert('게시글 수정에 실패했습니다.');
+        return;
+      }
+      alert('게시글이 성공적으로 수정되었습니다.');
+    } else {
+      // 데이터 없을시 등록.
+      const { error } = await supabase.from('posts').insert(post).select();
+
+      if (error) {
+        console.error('Error inserting post:', error.message);
+        alert('게시글 등록에 실패했습니다.');
+        return;
+      }
+      alert('게시글이 성공적으로 등록되었습니다.');
+    }
+
+    resetForm();
+    nav('/main');
+  };
+
+  const resetForm = () => {
+    setTitle('');
+    setAddress('');
+    setContent('');
+    setSelectedCategory('');
+    setRating(0);
+    setImage(null);
   };
 
   return (
     <>
       <Header />
       <Container>
-        <ImageUpload>
-          <ImagePlaceholder>
-            {initialData?.image ? <img src={initialData.image} alt="Uploaded" /> : '이미지를 업로드해주세요'}
-          </ImagePlaceholder>
-          <ButtonGroup>
-            <Button>사진 변경</Button>
-            <Button>사진 삭제</Button>
-          </ButtonGroup>
-        </ImageUpload>
-        <InputContainer>
-          <Label>제목</Label>
-          <Input type="text" defaultValue={initialData?.title} />
-        </InputContainer>
-        <InputContainer>
-          <Label>주소</Label>
-          <Input type="text" defaultValue={initialData?.address} />
-        </InputContainer>
-        <InputContainer>
-          <Label>종류</Label>
-          <CategoryContainer>
-            {categories.map((category) => (
-              <CategoryItem
-                key={category}
-                selected={category === selectedCategory}
-                onClick={() => handleCategoryClick(category)}
-              >
-                {category}
-              </CategoryItem>
-            ))}
-          </CategoryContainer>
-        </InputContainer>
-        <InputContainer>
-          <Label>내용</Label>
-          <TextArea defaultValue={initialData?.content} />
-        </InputContainer>
-        <InputContainer>
-          <Label>평점</Label>
-          <RatingContainer>
-            {Array.from({ length: 5 }, (_, index) => (
-              <Star key={index} selected={index < rating} onClick={() => handleRatingClick(index + 1)}>
-                ★
-              </Star>
-            ))}
-          </RatingContainer>
-        </InputContainer>
+        <ImageUploader image={image} onUpload={handleImageUpload} onDelete={() => setImage(null)} />
+        <TextInput label="제목" placeholder="제목을 입력해주세요." value={title} onChange={setTitle} />
+        <TextInput label="주소" placeholder="주소를 입력해주세요." value={address} onChange={setAddress} />
+        <CategorySelector
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onCategoryClick={(category) => setSelectedCategory(selectedCategory === category ? '' : category)}
+        />
+        <TextAreaInput label="내용" placeholder="내용을 입력해주세요." value={content} onChange={setContent} />
+        <RatingSelector rating={rating} onRatingClick={setRating} />
         <ButtonGroup>
-          <SubmitButton>수정</SubmitButton>
-          <CancelButton>취소</CancelButton>
+          <SubmitButton onClick={handleSubmit}>{isEdit ? '수정' : '등록'}</SubmitButton>
+          <CancelButton
+            onClick={() => {
+              nav(-1);
+              resetForm();
+            }}
+          >
+            취소
+          </CancelButton>
         </ButtonGroup>
       </Container>
     </>

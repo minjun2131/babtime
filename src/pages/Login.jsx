@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { supabase } from '../services/supabase';
 import {
   SignUpForm,
   Logo,
@@ -8,11 +10,59 @@ import {
   FormButton,
   LinkStyle
 } from '../styles/SignUpStyle.jsx';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate();
+  // 상태를 하나로 통합
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    error: '',
+    success: ''
+  });
+
+  // 로그인 처리 함수
+  const signIn = async (e) => {
+    e.preventDefault();
+    setFormData((prevData) => ({ ...prevData, error: '' })); // 오류 초기화
+
+    // Supabase 로그인 요청
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: formData.email,
+      password: formData.password
+    });
+
+    if (error) {
+      setFormData((prevData) => ({ ...prevData, error: error.message })); // 오류 메시지 설정
+    } else {
+      setFormData((prevData) => ({ ...prevData, success: '로그인 성공' }));
+      console.log('로그인 성공:', data);
+      // 로그인 성공 후 추가 작업 (예: 리디렉션)
+      // 로그인 성공 후 세션 저장
+      if (data.session) {
+        // JWT 토큰을 로컬 스토리지에 저장
+        localStorage.setItem('access_token', data.session.access_token);
+        localStorage.setItem('refresh_token', data.session.refresh_token);
+
+        console.log('로그인 성공:', data);
+      }
+
+      navigate('/');
+    }
+  };
+
+  // 상태 변경 함수 (이메일, 비밀번호)
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
+
   return (
-    // <form onSubmit={handleSignUp}>
-    <SignUpForm>
+    <SignUpForm onSubmit={signIn}>
       <div>
         <Logo>
           <img src="logo.png" alt="밥타임_로고" />
@@ -21,18 +71,14 @@ const Login = () => {
       <InputWrap>
         <InputDiv>
           <InputName>아이디</InputName>
-          {/* <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required /> */}
-          <Input />
+          <Input type="email" name="email" value={formData.email} onChange={handleInputChange} required />
         </InputDiv>
         <InputDiv>
           <InputName>비밀번호</InputName>
-          {/* <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required /> */}
-          <Input />
+          <Input type="password" name="password" value={formData.password} onChange={handleInputChange} required />
         </InputDiv>
         <InputDiv>
           <FormButton type="submit">로그인</FormButton>
-          {/* {error && <p style={{ color: 'red' }}>{error}</p>} */}
-          {/* {success && <p style={{ color: 'green' }}>{success}</p>} */}
         </InputDiv>
         <LinkStyle to="/SignUp">회원가입</LinkStyle>
       </InputWrap>
