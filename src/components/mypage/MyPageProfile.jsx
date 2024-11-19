@@ -35,8 +35,12 @@ function MyPageProfile({ paramUser, loginUser }) {
           </StyledMyPageDetail>
           <StyledMyPageDetail>{paramUser?.introduce || '자기소개가 없습니다'}</StyledMyPageDetail>
           <StyledMyPageDetail>
-            <Button label="프로필 수정" handleClick={() => setIsProfileModalOpen(true)} />
-            <Button category="sub" label="비밀번호 변경" handleClick={() => setIsPwdModalOpen(true)} />
+            {paramUser && loginUser && paramUser.id === loginUser.id && (
+              <>
+                <Button label="프로필 수정" handleClick={() => setIsProfileModalOpen(true)} />
+                <Button category="sub" label="비밀번호 변경" handleClick={() => setIsPwdModalOpen(true)} />
+              </>
+            )}
           </StyledMyPageDetail>
         </StyledMyPageSection>
         <StyledMyPageSection>

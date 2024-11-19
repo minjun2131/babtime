@@ -94,7 +94,7 @@ const MyPage = () => {
                   return null;
                 }
 
-                return { ...post, userName: user.name, userId: user.id };
+                return { ...post, userName: user.name, userId: user.id, userImage: user.profile_image_url };
               })
             );
 
