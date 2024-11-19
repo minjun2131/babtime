@@ -4,11 +4,12 @@ import CommentList from '../components/detail/CommentList';
 import PostDetail from '../components/detail/postDetail';
 import Button from '../components/detail/Button';
 import { ButtonContainer, CommentContainer, DetailContainer, Wrap } from '../styles/DetailStyle';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { supabase } from '../services/supabase';
 
 const Detail = () => {
+  const navigate = useNavigate();
   const param = useParams();
 
   const [user, setUser] = useState();
@@ -37,6 +38,14 @@ const Detail = () => {
     fetchData();
   }, [param.id]);
 
+  /* 게시글 삭제 이벤트 */
+  const handleDelete = async () => {
+    const { error } = await supabase.from('posts').delete().eq('id', post.id);
+
+    if (error) console.log(error);
+    else navigate('/main');
+  };
+
   return (
     <>
       {post && (
@@ -46,8 +55,8 @@ const Detail = () => {
             <PostDetail user={user} post={post} />
             {user.id === post.user_id && (
               <ButtonContainer>
-                <Button label="수정" handleClick={() => {}} />
-                <Button category="sub" label="삭제" handleClick={() => {}} />
+                <Button label="수정" handleClick={() => navigate(`/postedit/${post.id}`)} />
+                <Button category="sub" label="삭제" handleClick={handleDelete} />
               </ButtonContainer>
             )}
           </DetailContainer>
