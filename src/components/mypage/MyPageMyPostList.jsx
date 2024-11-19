@@ -1,23 +1,16 @@
-import React from 'react'
-import { StyledMyPagePostSection, StyledMyPageTitle, StyledMyPagePostList } from "../../styles/MyPageStyle"
-
+import React, { useEffect, useState } from 'react';
+import { StyledMyPagePostSection, StyledMyPageTitle } from '../../styles/MyPageStyle';
+import PostList from '../main/PostList.jsx';
 
 function MyPageMyPostList() {
   return (
     <>
-        <StyledMyPagePostSection>
-            <StyledMyPageTitle>나의 게시글</StyledMyPageTitle>
-            <StyledMyPagePostList>
-                <div style={{width: '358px', height: '380px', border:'black 1px solid'}}></div>
-                <div style={{width: '358px', height: '380px', border:'black 1px solid'}}></div>
-                <div style={{width: '358px', height: '380px', border:'black 1px solid'}}></div>
-                <div style={{width: '358px', height: '380px', border:'black 1px solid'}}></div>
-                <div style={{width: '358px', height: '380px', border:'black 1px solid'}}></div>
-                <div style={{width: '358px', height: '380px', border:'black 1px solid'}}></div>
-            </StyledMyPagePostList>
-        </StyledMyPagePostSection>
+      <StyledMyPagePostSection>
+        <StyledMyPageTitle>나의 게시글</StyledMyPageTitle>
+        {/* <PostList /> */}
+      </StyledMyPagePostSection>
     </>
-  )
+  );
 }
 
-export default MyPageMyPostList
+export default MyPageMyPostList;
