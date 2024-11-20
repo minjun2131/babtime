@@ -51,10 +51,7 @@ const Main = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const results = postData.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
-    setFilteredPosts(results);
-  }, [searchTerm, postData]);
+  const results = postData.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
     <>
@@ -62,8 +59,9 @@ const Main = () => {
       <MainVisual></MainVisual>
       <Inner>
         <IntroTitle>다양한 맛집 리뷰를 확인해 보세요.</IntroTitle>
-
-        <PostList posts={filteredPosts} loading={loading} error={error} />
+        {/* if (loading) return <div>Loading...</div>;
+        if (error) return <div>데이터를 불러오는 데 문제가 발생했습니다.</div>; */}
+        <PostList posts={results} loading={loading} error={error} />
       </Inner>
     </>
   );

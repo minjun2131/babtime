@@ -4,11 +4,11 @@ export const uploadProfileImage = async ({ file, userId }) => {
     if (!file || !userId) return null;
 
     const fileName = `profile_images/${userId}/profileImage.jpg`; // 파일 이름을 고정
+    // 파일이름 앞에 uuid 번호가 들어가야 고유 값의 생김
 
     const { data, error } = await supabase.storage
         .from("profile_images") // 버킷 이름
         .upload(fileName, file, {
-            cacheControl: "3600",
             upsert: true, // 동일한 파일 이름이 있을 경우 덮어쓰기
         });
 
