@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import { StyledModalWrapper, StyledModalContent, StyledModalCloseBtn, StyledModalTitle, StyledModalBtnWrapper, StyledModalInputWrapper, StyledModalInput, StyledMyPageBtn } from "../../styles/MyPageStyle"
 import { uploadProfileImage } from '../../api/fetchProfileImage';
 import { fetchGetUserData, fetchUpdateUserData } from '../../api/fetchUserData';
-import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 
@@ -14,7 +13,6 @@ function MyPageProfileEdit({ setIsProfileModalOpen, paramUser, loginUser, trigge
     const [name, setName] = useState(""); // 이름 상태
     const [introduce, setIntroduce] = useState(""); // 소개 상태
     const userId = paramUser.id && loginUser.id; // 로그인 유저 id
-    const navigate = useNavigate();
 
     // Supabase에서 사용자 정보 가져오기
     useEffect(() => {
@@ -63,7 +61,7 @@ function MyPageProfileEdit({ setIsProfileModalOpen, paramUser, loginUser, trigge
         <StyledModalWrapper>
             <StyledModalContent>
                 <StyledModalTitle>프로필 수정</StyledModalTitle>
-                <img src={profileImage || "/images/user.svg"} alt="user Image" />
+                <img src={profileImage || "/images/user.svg"} alt="user Image" style={{ borderRadius: "50%" }}/>
                 {/* 숨겨진 파일 입력 필드 */}
                 <input
                     type="file"

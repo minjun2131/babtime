@@ -4,13 +4,7 @@ import { typography } from '../configurations/Typography';
 /* MyPageProfile Style */
 export const StyledMypageWrapper = styled.div`
     width: 1200px; /* div의 가로 길이 설정 */
-    position: relative; /* relative 위치 지정 */
-    left: 50%; /* 왼쪽 끝을 화면의 50%로 설정 */
-    transform: translate(-50%); /* 자신 크기의 절반만큼 이동시켜 정확한 중앙 정렬 */
-    
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    margin: 0 auto;
     z-index: 1; /* 모달창보다 뒤에 표시 */
 `
 
@@ -32,9 +26,11 @@ export const StyledMyPageSection = styled.div`
 
     img {
     width: 150px; 
-    height: 150px; 
-  }
+    height: 150px;
+    border-radius: 50%; 
+  }  
 `
+
 /* 이름, 소개, 버튼 영역 */
 export const StyledMyPageDetail = styled.div`
     width: 100%;
@@ -51,13 +47,13 @@ export const StyledLogoutButton = styled.button`
     background: none;
     border: none;
     ${typography.body2}
-    color: #333;
+    color: #ff6347;
     cursor: pointer;
     text-decoration: none;
-    transition: color 0.3s, text-decoration 0.3s;
+    transition: color 0.2s, text-decoration 0.3s;
 
     &:hover {
-        color: #ff6347; /* 호버 시 색 변화 */
+        font-weight: 700;
         text-decoration: none; /* 호버 시 밑줄 제거 */
     }
 `
@@ -91,12 +87,13 @@ export const StyledMyPagePostList = styled.div`
 
 /* Modal Style */
 export const StyledModalWrapper = styled.div`
+    width: 100vw;
     position: fixed;
     height: 100vh;
     top: 0;
     left: 0;
     right: 0;
-    /* background: rgba(0, 0, 0, 0.5); */
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -104,7 +101,7 @@ export const StyledModalWrapper = styled.div`
 `
 
 export const StyledModalContent = styled.div`
-    margin-bottom: 30%;
+    margin-bottom: 90px;
 
     background: white;
     padding: 40px;

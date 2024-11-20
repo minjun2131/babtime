@@ -8,7 +8,7 @@ export const uploadProfileImage = async ({ file, userId }) => {
     const { data, error } = await supabase.storage
         .from("profile_images") // 버킷 이름
         .upload(fileName, file, {
-            cacheControl: "3600",
+            cacheControl: "0",
             upsert: true, // 동일한 파일 이름이 있을 경우 덮어쓰기
         });
 
