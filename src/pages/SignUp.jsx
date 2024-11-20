@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../api/services/supabase.js';
-import { SignUpForm, Logo, InputWrap, InputDiv, FormButton, LinkStyle, Image } from '../styles/SignUpStyle.jsx';
+import { SignUpForm, Logo, InputWrap, InputDiv, FormButton, LinkStyle } from '../styles/SignUpStyle.jsx';
 import { toast } from 'react-toastify';
 import InputField from '../components/form/inputfield.jsx';
 import useFormHandler from '../components/form/useFormHandler.js';
@@ -74,7 +74,7 @@ const SignUp = () => {
     <SignUpForm onSubmit={handleSignUp}>
       <div>
         <Logo>
-          <Image src="../../public/images/logo.svg" alt="밥타임_로고" />
+          <img src="../../public/images/logo.svg" alt="밥타임_로고" />
         </Logo>
       </div>
       <InputWrap>
