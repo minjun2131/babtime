@@ -1,5 +1,5 @@
 import { supabase } from '../api/services/supabase.js';
-import { SignUpForm, Logo, InputWrap, FormButton, LinkStyle, InputDiv } from '../styles/SignUpStyle.jsx';
+import { SignUpForm, Logo, InputWrap, FormButton, LinkStyle, InputDiv, Image } from '../styles/SignUpStyle.jsx';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../api/contexts/UserContext.jsx';
 
@@ -50,7 +50,7 @@ const Login = () => {
     <SignUpForm onSubmit={signIn}>
       <div>
         <Logo>
-          <img src="../images/logo_horizontal.svg" alt="밥타임_로고" />
+          <Image src="../../public/images/logo.svg" alt="밥타임_로고" />
         </Logo>
       </div>
       <InputWrap>

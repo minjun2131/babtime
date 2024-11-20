@@ -60,6 +60,10 @@ const FormButton = styled.button`
   }
 `;
 
+const Image = styled.img`
+  width: 150px;
+`;
+
 const LinkStyle = styled(Link)`
   color: #aaa;
   margin: 30px 0;
@@ -67,4 +71,4 @@ const LinkStyle = styled(Link)`
     color: #333;
   }
 `;
-export { SignUpForm, Logo, InputWrap, InputDiv, InputName, Input, FormButton, LinkStyle };
+export { SignUpForm, Logo, InputWrap, InputDiv, InputName, Input, FormButton, LinkStyle, Image };

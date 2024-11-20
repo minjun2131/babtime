@@ -31,7 +31,7 @@ const App = () => {
     <UserProvider>
       <GlobalStyle />
       <Router />
-      <Toast position="top-center" autoClose={100000} closeButton={false} hideProgressBar />
+      <Toast position="top-center" autoClose={2000} closeButton={false} hideProgressBar />
     </UserProvider>
   );
 };
