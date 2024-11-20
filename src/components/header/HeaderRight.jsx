@@ -3,17 +3,20 @@ import { Link, useLocation } from 'react-router-dom';
 import ProfileSmall from './ProfileSmall';
 import { HeaderRightDiv, ButtonPrimary } from '../../styles/HeaderStyle.jsx';
 import { supabase } from '../../api/services/supabase.js';
+import { useAuth } from '../../api/contexts/UserContext';
 
-const HeaderRight = ({ loginUser }) => {
+const HeaderRight = () => {
+  const { currentUser } = useAuth();
+
   const [profileImage, setProfileImage] = useState(null);
 
   useEffect(() => {
     const fetchProfileImage = async () => {
-      if (loginUser) {
+      if (currentUser) {
         const { data, error } = await supabase
           .from('users')
           .select('profile_image_url')
-          .eq('id', loginUser.id)
+          .eq('id', currentUser.id)
           .single();
 
         if (error) {
@@ -25,14 +28,14 @@ const HeaderRight = ({ loginUser }) => {
     };
 
     fetchProfileImage();
-  }, [loginUser]);
+  }, [currentUser]);
 
   const location = useLocation();
   const isPostEditVisible = location.pathname.toLowerCase().includes('postedit');
 
   return (
     <HeaderRightDiv>
-      {loginUser ? (
+      {currentUser ? (
         <>
           {!isPostEditVisible && (
             <Link to={`/postEdit`}>
@@ -40,7 +43,7 @@ const HeaderRight = ({ loginUser }) => {
             </Link>
           )}
 
-          <Link to={`/myPage/${loginUser.id}`}>
+          <Link to={`/myPage/${currentUser.id}`}>
             <ProfileSmall profileImage={profileImage} />
           </Link>
         </>

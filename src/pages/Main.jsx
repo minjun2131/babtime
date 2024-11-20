@@ -1,16 +1,17 @@
 import Header from '../components/header/Header.jsx';
 import { Inner, MainVisual, IntroTitle } from '../styles/MainStyle.jsx';
+import Category from '../components/main/Category.jsx';
 import PostList from '../components/main/PostList.jsx';
 import { supabase } from '../api/services/supabase.js';
 import React, { useEffect, useState } from 'react';
 
 const Main = () => {
   const [searchTerm, setSearchTerm] = useState('');
-
   const [postData, setPostData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [filteredPosts, setFilteredPosts] = useState([]); // 검색 state
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('전체');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,9 +53,23 @@ const Main = () => {
   }, []);
 
   useEffect(() => {
-    const results = postData.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
+    let results = postData;
+
+    // 검색어로 필터링
+    if (searchTerm) {
+      results = results.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
+    }
+    // 선택한 카테고리로 필터링
+    if (selectedCategory && selectedCategory !== '전체') {
+      results = results.filter((post) => post.category === selectedCategory);
+    }
+
     setFilteredPosts(results);
-  }, [searchTerm, postData]);
+  }, [searchTerm, postData, selectedCategory]);
+
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+  };
 
   return (
     <>
@@ -66,7 +81,7 @@ const Main = () => {
         ) : (
           <IntroTitle>다양한 맛집 리뷰를 확인해 보세요.</IntroTitle>
         )}
-
+        <Category onCategoryClick={handleCategoryClick} selectedCategory={selectedCategory} />
         <PostList posts={filteredPosts} loading={loading} error={error} />
       </Inner>
     </>
