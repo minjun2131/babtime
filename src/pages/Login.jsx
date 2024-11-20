@@ -1,11 +1,13 @@
 import { supabase } from '../api/services/supabase.js';
 import { SignUpForm, Logo, InputWrap, FormButton, LinkStyle, InputDiv } from '../styles/SignUpStyle.jsx';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../api/contexts/UserContext.jsx';
 
 import useFormHandler from '../components/form/useFormHandler.js';
 import InputField from '../components/form/inputfield.jsx';
 
 const Login = () => {
+  const { setIsLogin } = useAuth();
   const navigate = useNavigate();
   // 상태를 하나로 통합
   const { formData, setFormData, handleInputChange } = useFormHandler({});
@@ -39,6 +41,7 @@ const Login = () => {
     } else {
       setFormData((prevData) => ({ ...prevData, success: '로그인 성공' }));
       console.log('로그인 성공:', data);
+      setIsLogin(true);
       navigate('/');
     }
   };
