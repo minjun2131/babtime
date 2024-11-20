@@ -11,8 +11,7 @@ import { supabase } from '../services/supabase';
 import { toast } from 'react-toastify';
 
 const PostEdit = () => {
-  const params = useParams();
-  const postId = params.id;
+  const { id: postId } = useParams();
   const [currentUser, setCurrentUser] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
   const [title, setTitle] = useState('');
@@ -40,7 +39,7 @@ const PostEdit = () => {
     };
 
     checkUser();
-  }, [nav]);
+  }, []);
 
   // 기존 게시물 데이터를 불러오기
   useEffect(() => {
@@ -68,7 +67,7 @@ const PostEdit = () => {
     };
 
     fetchPost();
-  }, [postId, nav, currentUser]);
+  }, [postId, currentUser]);
 
   // 이미지 업로드
   const uploadImage = async (file) => {
@@ -79,13 +78,14 @@ const PostEdit = () => {
       return null;
     }
 
-    return supabase.storage.from('images').getPublicUrl(data.path).publicUrl;
+    return await supabase.storage.from('images').getPublicUrl(data.path).publicUrl;
   };
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
+    // 로컬 이미지 미리보기
     const reader = new FileReader();
     reader.onload = () => setImage(reader.result);
     reader.readAsDataURL(file);
@@ -97,7 +97,39 @@ const PostEdit = () => {
     event.target.value = null;
   };
 
-  // 등록 또는 수정 로직
+  // 게시글 생성
+  const createPost = async (post) => {
+    const { error } = await supabase.from('posts').insert(post).select();
+
+    if (error) {
+      console.error('Error inserting post:', error.message);
+      toast.error('게시글 등록에 실패했습니다.');
+      return;
+    }
+
+    toast.success('게시글이 성공적으로 등록되었습니다.');
+    resetForm();
+    nav('/');
+    return;
+  };
+
+  // 게시글 수정
+  const updatePost = async (post, postId) => {
+    const numericId = parseInt(postId, 10);
+    const { error } = await supabase.from('posts').update(post).eq('id', numericId).select();
+
+    if (error) {
+      console.error('Error updating post:', error.message);
+      toast.error('게시글 수정에 실패했습니다.');
+      return;
+    }
+
+    toast.success('게시글이 성공적으로 수정되었습니다.');
+    nav(-1);
+    return;
+  };
+
+  // 등록, 수정 핸들러
   const handleSubmit = async () => {
     if (!currentUser) {
       toast.error('로그인이 필요합니다.');
@@ -120,28 +152,10 @@ const PostEdit = () => {
     };
 
     if (isEdit) {
-      const numericId = parseInt(postId, 10);
-      const { error } = await supabase.from('posts').update(post).eq('id', numericId).select();
-      if (error) {
-        console.error('Error updating post:', error.message);
-        toast.error('게시글 수정에 실패했습니다.');
-        return;
-      }
-      toast.success('게시글이 성공적으로 수정되었습니다.');
-      nav(-1);
+      await updatePost(post, postId);
     } else {
-      const { error } = await supabase.from('posts').insert(post).select();
-
-      if (error) {
-        console.error('Error inserting post:', error.message);
-        toast.error('게시글 등록에 실패했습니다.');
-        return;
-      }
-      toast.success('게시글이 성공적으로 등록되었습니다.');
+      await createPost(post);
     }
-
-    resetForm();
-    nav('/');
   };
 
   const resetForm = () => {
