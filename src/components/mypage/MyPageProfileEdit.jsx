@@ -4,8 +4,10 @@ import { uploadProfileImage } from '../../api/fetchProfileImage';
 import { fetchGetUserData, fetchUpdateUserData } from '../../api/fetchUserData';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
+import { useAuth } from '../../api/contexts/UserContext';
 
-function MyPageProfileEdit({ setIsProfileModalOpen, paramUser, loginUser, profileImage, setProfileImage, triggerReload }) {
+function MyPageProfileEdit({ setIsProfileModalOpen, paramUser, profileImage, setProfileImage, triggerReload }) {
+    const { currentUser: loginUser } = useAuth();
     const fileInputRef = useRef();
     const [previewUrl, setPreviewUrl] = useState(null);
     const [file, setFile] = useState(null); // file 상태 추가

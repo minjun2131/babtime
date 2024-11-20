@@ -13,8 +13,10 @@ import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 import { fetchGetProfileImage } from '../../api/fetchUserData';
+import { useAuth } from '../../api/contexts/UserContext';
 
-function MyPageProfile({ paramUser, loginUser, triggerReload }) {
+function MyPageProfile({ paramUser, triggerReload }) {
+  const { currentUser: loginUser } = useAuth();
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false); // 모달 열기/닫기 상태 관리
   const [isPwdModalOpen, setIsPwdModalOpen] = useState(false); // 모달 열기/닫기 상태 관리
   const [profileImage, setProfileImage] = useState(null);
@@ -59,7 +61,7 @@ function MyPageProfile({ paramUser, loginUser, triggerReload }) {
       </StyledMyPageProfileWrapper>
 
       {/* MyPageProfileEdit 모달 */}
-      {isProfileModalOpen && <MyPageProfileEdit setIsProfileModalOpen={setIsProfileModalOpen} paramUser={paramUser} loginUser={loginUser} profileImage={profileImage} setProfileImage={setProfileImage} triggerReload ={triggerReload}/>}
+      {isProfileModalOpen && <MyPageProfileEdit setIsProfileModalOpen={setIsProfileModalOpen} paramUser={paramUser} profileImage={profileImage} setProfileImage={setProfileImage} triggerReload={triggerReload} />}
       {/* MyPagePwdEdit 모달 */}
       {isPwdModalOpen && <MyPagePwdEdit setIsPwdModalOpen={setIsPwdModalOpen} />}
     </>
