@@ -23,6 +23,8 @@ const Toast = styled(ToastContainer)`
   }
   .Toastify__toast--error {
     border: 2px solid #e33f32;
+    left: 37px;
+    top: 50px;
   }
 `;
 
@@ -31,7 +33,7 @@ const App = () => {
     <>
       <GlobalStyle />
       <Router />
-      <Toast position="top-center" autoClose={2000} closeButton={false} hideProgressBar />
+      <Toast position="top-center" autoClose={100000} closeButton={false} hideProgressBar />
     </>
   );
 };

@@ -38,16 +38,6 @@ const Login = () => {
     } else {
       setFormData((prevData) => ({ ...prevData, success: '로그인 성공' }));
       console.log('로그인 성공:', data);
-      // 로그인 성공 후 추가 작업 (예: 리디렉션)
-      // 로그인 성공 후 세션 저장
-      if (data.session) {
-        // JWT 토큰을 로컬 스토리지에 저장
-        localStorage.setItem('access_token', data.session.access_token);
-        localStorage.setItem('refresh_token', data.session.refresh_token);
-
-        console.log('로그인 성공:', data);
-      }
-
       navigate('/');
     }
   };

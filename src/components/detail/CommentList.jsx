@@ -3,7 +3,7 @@ import { typography } from '../../configurations/Typography';
 import { color } from '../../configurations/Color';
 
 const Container = styled.div`
-  width: 1200px;
+  width: 800px;
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -13,7 +13,6 @@ const CommentContainer = styled.div`
   width: max-content;
   max-width: 100%;
   display: flex;
-  align-items: center;
   gap: 20px;
   background: ${color.white};
   border-radius: 10px;
