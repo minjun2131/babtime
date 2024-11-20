@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import ProfileSmall from './ProfileSmall';
 import { HeaderRightDiv, ButtonPrimary } from '../../styles/HeaderStyle.jsx';
 import { supabase } from '../../api/services/supabase.js';
@@ -27,13 +27,19 @@ const HeaderRight = ({ loginUser }) => {
     fetchProfileImage();
   }, [loginUser]);
 
+  const location = useLocation();
+  const isPostEditVisible = location.pathname.toLowerCase().includes('postedit');
+
   return (
     <HeaderRightDiv>
       {loginUser ? (
         <>
-          <Link to={`/postEdit`}>
-            <ButtonPrimary>새 글 작성</ButtonPrimary>
-          </Link>
+          {!isPostEditVisible && (
+            <Link to={`/postEdit`}>
+              <ButtonPrimary>새 글 작성</ButtonPrimary>
+            </Link>
+          )}
+
           <Link to={`/myPage/${loginUser.id}`}>
             <ProfileSmall profileImage={profileImage} />
           </Link>
