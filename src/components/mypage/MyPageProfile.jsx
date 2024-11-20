@@ -59,14 +59,7 @@ function MyPageProfile({ paramUser, loginUser, triggerReload }) {
       </StyledMyPageProfileWrapper>
 
       {/* MyPageProfileEdit 모달 */}
-      {isProfileModalOpen && (
-        <MyPageProfileEdit
-          setIsProfileModalOpen={setIsProfileModalOpen}
-          paramUser={paramUser}
-          loginUser={loginUser}
-          triggerReload={triggerReload}
-        />
-      )}
+      {isProfileModalOpen && <MyPageProfileEdit setIsProfileModalOpen={setIsProfileModalOpen} paramUser={paramUser} loginUser={loginUser} profileImage={profileImage} setProfileImage={setProfileImage} triggerReload ={triggerReload}/>}
       {/* MyPagePwdEdit 모달 */}
       {isPwdModalOpen && <MyPagePwdEdit setIsPwdModalOpen={setIsPwdModalOpen} />}
     </>
