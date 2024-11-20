@@ -8,32 +8,23 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { supabase } from '../api/services/supabase';
 import { toast } from 'react-toastify';
+import { useAuth } from '../api/contexts/UserContext';
 
 const Detail = () => {
   const navigate = useNavigate();
   const param = useParams();
 
-  const [user, setUser] = useState();
+  const { currentUser: user } = useAuth();
+
   const [post, setPost] = useState();
   const [comments, setComments] = useState([]);
-
-  /* 로그인한 유저 정보 가져오기 */
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data } = await supabase.auth.getUser();
-
-      setUser(data.user);
-    };
-
-    fetchUser();
-  }, []);
 
   /* 게시글 상세 정보 가져오기 */
   useEffect(() => {
     const fetchData = async () => {
       const { data, error } = await supabase.from('posts').select('*').eq('id', param.id);
 
-      if (error) window.alert('오류가 발생했습니다.');
+      if (error) toast.error('오류가 발생했습니다.');
       else setPost(data[0]);
     };
 
@@ -49,7 +40,7 @@ const Detail = () => {
         .eq('post_id', param.id)
         .order('created_at', { ascending: false });
 
-      if (error) window.alert('오류가 발생했습니다.');
+      if (error) toast.error('오류가 발생했습니다.');
       else setComments(data);
     };
 
@@ -60,10 +51,10 @@ const Detail = () => {
   const handleDeletePost = async () => {
     const { error } = await supabase.from('posts').delete().eq('id', post.id);
 
-    if (error) console.log(error);
+    if (error) toast.error('오류가 발생했습니다.');
     else {
-      navigate('/');
       toast.success('게시글이 성공적으로 삭제되었습니다.');
+      navigate('/');
     }
   };
 
@@ -83,7 +74,7 @@ const Detail = () => {
 
     const { addError } = await supabase.from('comments').insert({ content: value, user_id: user.id, post_id: post.id });
 
-    if (addError) console.log(addError);
+    if (addError) toast.error('오류가 발생했습니다.');
     else {
       const { data, readError } = await supabase
         .from('comments')
@@ -91,7 +82,7 @@ const Detail = () => {
         .eq('post_id', param.id)
         .order('created_at', { ascending: false });
 
-      if (readError) window.alert('오류가 발생했습니다.');
+      if (readError) toast.error('오류가 발생했습니다.');
       else setComments(data);
     }
   };
@@ -102,7 +93,7 @@ const Detail = () => {
         <Wrap>
           <Header />
           <DetailContainer>
-            <PostDetail user={user} post={post} />
+            <PostDetail post={post} />
             {user?.id === post.user_id && (
               <ButtonContainer>
                 <Button label="수정" handleClick={() => navigate(`/postedit/${post.id}`)} />
