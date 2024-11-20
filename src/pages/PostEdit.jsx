@@ -104,7 +104,7 @@ const PostEdit = () => {
     if (error) {
       console.error('Error inserting post:', error.message);
       toast.error('게시글 등록에 실패했습니다.');
-      return false;
+      return;
     }
 
     toast.success('게시글이 성공적으로 등록되었습니다.');
@@ -121,7 +121,7 @@ const PostEdit = () => {
     if (error) {
       console.error('Error updating post:', error.message);
       toast.error('게시글 수정에 실패했습니다.');
-      return false;
+      return;
     }
 
     toast.success('게시글이 성공적으로 수정되었습니다.');
