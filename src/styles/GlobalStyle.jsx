@@ -51,6 +51,9 @@ const GlobalStyle = createGlobalStyle`
         color: inherit;
         text-decoration: none;
     }
+    button {
+        cursor: pointer;
+    }
     #root {
         padding-top: 90px;
     }

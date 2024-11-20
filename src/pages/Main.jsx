@@ -1,16 +1,17 @@
 import Header from '../components/header/Header.jsx';
 import { Inner, MainVisual, IntroTitle } from '../styles/MainStyle.jsx';
+import Category from '../components/main/Category.jsx';
 import PostList from '../components/main/PostList.jsx';
 import { supabase } from '../api/services/supabase.js';
 import React, { useEffect, useState } from 'react';
 
 const Main = () => {
   const [searchTerm, setSearchTerm] = useState('');
-
   const [postData, setPostData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [filteredPosts, setFilteredPosts] = useState([]); // 검색 state
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('전체');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,15 +52,45 @@ const Main = () => {
     fetchData();
   }, []);
 
+<<<<<<< HEAD
   const results = postData.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
+=======
+  useEffect(() => {
+    let results = postData;
+
+    // 검색어로 필터링
+    if (searchTerm) {
+      results = results.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
+    }
+    // 선택한 카테고리로 필터링
+    if (selectedCategory && selectedCategory !== '전체') {
+      results = results.filter((post) => post.category === selectedCategory);
+    }
+
+    setFilteredPosts(results);
+  }, [searchTerm, postData, selectedCategory]);
+
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+  };
+>>>>>>> c9ab72ebc441efe732cd354bcf436eb5c91ee340
 
   return (
     <>
       <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       {!searchTerm && <MainVisual></MainVisual>}
       <Inner>
+<<<<<<< HEAD
         <IntroTitle>다양한 맛집 리뷰를 확인해 보세요.</IntroTitle>
 
+=======
+        {searchTerm ? (
+          <IntroTitle>{searchTerm}의 검색결과입니다.</IntroTitle>
+        ) : (
+          <IntroTitle>다양한 맛집 리뷰를 확인해 보세요.</IntroTitle>
+        )}
+        <Category onCategoryClick={handleCategoryClick} selectedCategory={selectedCategory} />
+>>>>>>> c9ab72ebc441efe732cd354bcf436eb5c91ee340
         <PostList posts={filteredPosts} loading={loading} error={error} />
       </Inner>
     </>

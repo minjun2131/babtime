@@ -13,9 +13,16 @@ import {
   ErrorScreen
 } from '../../styles/MainStyle.jsx';
 
+<<<<<<< HEAD
 export const PostList = ({ posts, loading, error, userInfo }) => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>데이터를 불러오는 데 문제가 발생했습니다.</div>;
+=======
+export const PostList = ({ posts, loading, error, userInfo, page = '' }) => {
+  if (loading) return <Loading></Loading>;
+  if (error) return <ErrorScreen>데이터를 불러오는 데 문제가 발생했습니다.</ErrorScreen>;
+  if (!posts || posts.length === 0 )  { return page === 'like' ? <ErrorScreen>아직 좋아요 누른 게시글이 없습니다. 마음에 드는 글을 찾아보세요.</ErrorScreen> : <ErrorScreen>등록된 게시글이 없습니다. 새로운 글을 작성해보세요.</ErrorScreen> }
+>>>>>>> c9ab72ebc441efe732cd354bcf436eb5c91ee340
 
   return (
     <PostUl>
