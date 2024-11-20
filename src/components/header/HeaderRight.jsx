@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProfileSmall from './ProfileSmall';
 import { HeaderRightDiv, ButtonPrimary } from '../../styles/HeaderStyle.jsx';
-import { supabase } from '../../services/supabase';
+import { supabase } from '../../api/services/supabase.js';
 
 const HeaderRight = ({ loginUser }) => {
   const [profileImage, setProfileImage] = useState(null);
