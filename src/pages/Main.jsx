@@ -59,9 +59,13 @@ const Main = () => {
   return (
     <>
       <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <MainVisual></MainVisual>
+      {!searchTerm && <MainVisual></MainVisual>}
       <Inner>
-        <IntroTitle>다양한 맛집 리뷰를 확인해 보세요.</IntroTitle>
+        {searchTerm ? (
+          <IntroTitle>{searchTerm}의 검색결과입니다.</IntroTitle>
+        ) : (
+          <IntroTitle>다양한 맛집 리뷰를 확인해 보세요.</IntroTitle>
+        )}
 
         <PostList posts={filteredPosts} loading={loading} error={error} />
       </Inner>
