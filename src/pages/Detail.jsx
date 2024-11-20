@@ -6,7 +6,7 @@ import Button from '../components/detail/Button';
 import { ButtonContainer, CommentContainer, DetailContainer, Wrap } from '../styles/DetailStyle';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { supabase } from '../services/supabase';
+import { supabase } from '../api/services/supabase';
 import { toast } from 'react-toastify';
 
 const Detail = () => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom'; 
+import { useParams } from 'react-router-dom';
 import { StyledMypageWrapper } from '../styles/MyPageStyle';
-import { supabase } from '../services/supabase';
+import { supabase } from '../api/services/supabase';
 import Header from '../components/header/Header';
 import MyPageLikePostList from '../components/mypage/MyPageLikePostList';
 import MyPageMyPostList from '../components/mypage/MyPageMyPostList';
@@ -9,7 +9,7 @@ import MyPageProfile from '../components/mypage/MyPageProfile';
 import { fetchUserData, fetchWritePosts, fetchLikedPosts } from '../api/fetchUserData';
 
 const MyPage = () => {
-  const param = useParams(); 
+  const param = useParams();
 
   const [paramUser, setParamUserData] = useState(null);
   const [loginUser, setUser] = useState(null);
@@ -92,7 +92,7 @@ const MyPage = () => {
     <>
       <Header key={reload} />
       <StyledMypageWrapper>
-        <MyPageProfile paramUser={paramUser} loginUser={loginUser} triggerReload={() => setReload(!reload)}/>
+        <MyPageProfile paramUser={paramUser} loginUser={loginUser} triggerReload={() => setReload(!reload)} />
         <MyPageMyPostList paramUser={paramUser} posts={writePosts} loading={loading} error={error} />
         {paramUser && loginUser && paramUser.id === loginUser.id && (
           <MyPageLikePostList posts={likePosts} loading={loading} error={error} />
