@@ -16,10 +16,11 @@ export const Inner = styled.div`
 
 export const IntroTitle = styled.p`
   margin-top: 100px;
-  font-weight: 900;
+  font-weight: 700;
   font-size: 36px;
   line-height: 40px;
   color: ${color.black};
+  text-align: center;
 `;
 
 export const PostUl = styled.ul`
@@ -149,4 +150,30 @@ export const Loading = styled.div`
     }
   }
 `;
-export const ErrorScreen = styled.span``;
+export const ErrorScreen = styled.div`
+  padding: 50px 0;
+  font-size: 20px;
+  font-weight: 500;
+  color: #888;
+  text-align: center;
+`;
+
+export const FoodCategory = styled.ul`
+  margin: 50px 0 30px;
+  display: flex;
+  justify-content: center;
+
+  li {
+    padding: 0 25px;
+  }
+
+  li + li {
+    border-left: 1px solid #ddd;
+  }
+  button {
+    font-size: 22px;
+    border: 0;
+    background: none;
+    text-underline-offset: 7px;
+  }
+`;
