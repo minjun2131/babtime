@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { StyledMypageWrapper } from '../styles/MyPageStyle';
-import { supabase } from '../api/services/supabase';
 import Header from '../components/header/Header';
 import MyPageLikePostList from '../components/mypage/MyPageLikePostList';
 import MyPageMyPostList from '../components/mypage/MyPageMyPostList';
@@ -12,7 +11,7 @@ import { useAuth } from '../api/contexts/UserContext';
 const MyPage = () => {
   const param = useParams();
   const { currentUser: loginUser } = useAuth();
-  const [paramUser, setParamUserData] = useState(null);
+  const [paramUser, setParamUser] = useState(null);
   const [writePosts, setWritePosts] = useState([]);
   const [likePosts, setLikePosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,7 +24,7 @@ const MyPage = () => {
       setLoading(true);
       try {
         const userData = await fetchUserData(param.id);
-        setParamUserData(userData);
+        setParamUser(userData);
       } catch (err) {
         console.error('유저 데이터를 가져오는 데 오류가 발생했습니다:', err);
         setError(err);
