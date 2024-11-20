@@ -16,6 +16,9 @@ const SignUpForm = styled.form`
 const Logo = styled.h1`
   padding: 50px;
   text-align: center;
+  img {
+    width: 150px;
+  }
 `;
 
 const InputWrap = styled.div`
