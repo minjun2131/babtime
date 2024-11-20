@@ -11,8 +11,10 @@ import {
   LinkStyle
 } from '../styles/SignUpStyle.jsx';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../api/contexts/UserContext.jsx';
 
 const Login = () => {
+  const { setIsLogin } = useAuth();
   const navigate = useNavigate();
   // 상태를 하나로 통합
   const [formData, setFormData] = useState({
@@ -38,6 +40,7 @@ const Login = () => {
     } else {
       setFormData((prevData) => ({ ...prevData, success: '로그인 성공' }));
       console.log('로그인 성공:', data);
+      setIsLogin(true);
       navigate('/');
     }
   };
