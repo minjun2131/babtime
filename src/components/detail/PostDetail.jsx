@@ -3,6 +3,7 @@ import { typography } from '../../configurations/Typography';
 import { color } from '../../configurations/Color';
 import Like from './Like';
 import NoImage from '/images/noimg.svg';
+import { useAuth } from '../../api/contexts/UserContext';
 
 const Container = styled.div`
   display: flex;
@@ -65,7 +66,9 @@ const RowContent = styled.p`
   color: ${color.black};
 `;
 
-const PostDetail = ({ user, post }) => {
+const PostDetail = ({ post }) => {
+  const { currentUser: user } = useAuth();
+
   return (
     <Container>
       <Image src={post.image_url ?? NoImage} alt="image" />
