@@ -21,8 +21,8 @@ function MyPageProfile({ paramUser, loginUser, triggerReload  }) {
   const nav = useNavigate();
 
   useEffect(() => {
-    fetchGetProfileImage({ setProfileImage, loginUser });
-}, [loginUser]);
+    fetchGetProfileImage({ setProfileImage, paramUser });
+}, [paramUser]);
   
   const handleLogout = async () => {
     await supabase.auth.signOut();

@@ -10,8 +10,20 @@ function MyPagePwdEdit({ setIsPwdModalOpen }) {
     const [confirmPwd, setConfirmPwd] = useState("");
 
     const handlePwdSave = async () => {
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$!%*?&])[A-Za-z\d@#$!%*?&]{6,}$/;
+
         if (!currentPwd || !newPwd || !confirmPwd) {
-            toast.error("모든 필드를 입력해 주세요.");
+            toast.error("모든 내용을 입력해 주세요.");
+            return;
+        }
+
+        if (!passwordRegex.test(newPwd)) {
+            toast.warn("비밀번호는 영문, 숫자, 특수문자를 포함하여 6자 이상이어야 합니다.");
+            return;
+        }
+
+        if (currentPwd === newPwd) {
+            toast.warn("현재 비밀번호와 새 비밀번호가 동일합니다.");
             return;
         }
 
@@ -20,25 +32,20 @@ function MyPagePwdEdit({ setIsPwdModalOpen }) {
             return;
         }
 
-        if (currentPwd === newPwd) {
-            toast.warn("현재 비밀번호와 새 비밀번호가 동일합니다.");
-            return;
-        }
-        
         try {
             // Step 1: 현재 비밀번호 확인
             const { data: { user }, error: signInError } = await supabase.auth.getUser();
-            
+
             if (signInError || !user) {
                 toast.error("로그인 정보가 유효하지 않습니다.");
                 return;
             }
-            
+
             const { error: signInWithPwdError } = await supabase.auth.signInWithPassword({
                 email: user.email, // 현재 로그인된 사용자의 이메일
                 password: currentPwd, // 입력한 현재 비밀번호
             });
-    
+
             if (signInWithPwdError) {
                 toast.error("현재 비밀번호가 일치하지 않습니다.");
                 return;
@@ -59,7 +66,10 @@ function MyPagePwdEdit({ setIsPwdModalOpen }) {
             setIsPwdModalOpen(false);
         } catch (err) {
             console.error("Unexpected error:", err);
-            toast.error("비밀번호는 6글자 이상 입력해 주세요.");
+            toast.error(
+                `비밀번호 변경 중 오류가 발생했습니다. 
+                 상세 내용: ${err.message || JSON.stringify(err)}`
+            );
         }
     };
 

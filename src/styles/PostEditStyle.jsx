@@ -3,8 +3,7 @@ import styled from 'styled-components';
 // 컨테이너
 export const Container = styled.div`
   max-width: 800px;
-  margin: 0 auto;
-  margin-top: 150px; /* Header 높이만큼 상단 여백 */
+  margin: 150px auto 150px auto;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -44,26 +43,51 @@ export const ButtonGroup = styled.div`
 `;
 
 export const Button = styled.button`
-  padding: 10px 20px;
+  width: 120px;
+  margin-top: 20px;
   background-color: #ffb879;
-  border: none;
-  border-radius: 5px;
+  border: 1px solid #ffb879;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  color: #ffffff;
+  padding: 10px;
   cursor: pointer;
-  color: #fff;
-  text-align: center;
   &:hover {
     background-color: #e09c67;
   }
 `;
 
 export const SubmitButton = styled(Button)`
+  width: 120px;
+  margin-top: 20px;
   background-color: #ffb879;
+  border: 1px solid #ffb879;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  color: #ffffff;
+  padding: 10px;
+  cursor: pointer;
+  &:hover {
+    background-color: #e09c67;
+  }
 `;
 
 export const CancelButton = styled(Button)`
-  background-color: #fff;
-  color: #ffb879;
+  width: 120px;
+  margin-top: 20px;
+  background-color: #ffffff;
   border: 1px solid #ffb879;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  color: #ffb879;
+  padding: 10px;
+  cursor: pointer;
   &:hover {
     background-color: #ffe3cc;
   }

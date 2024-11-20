@@ -56,12 +56,11 @@ const Main = () => {
   return (
     <>
       <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <MainVisual></MainVisual>
+      {!searchTerm && <MainVisual></MainVisual>}
       <Inner>
         <IntroTitle>다양한 맛집 리뷰를 확인해 보세요.</IntroTitle>
-        {/* if (loading) return <div>Loading...</div>;
-        if (error) return <div>데이터를 불러오는 데 문제가 발생했습니다.</div>; */}
-        <PostList posts={results} loading={loading} error={error} />
+
+        <PostList posts={filteredPosts} loading={loading} error={error} />
       </Inner>
     </>
   );

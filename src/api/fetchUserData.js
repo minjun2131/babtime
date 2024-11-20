@@ -58,12 +58,12 @@ export const fetchLikedPosts = async (userId) => {
 };
 
 // 유저 프로필 이미지 가져오기
-export const fetchGetProfileImage = async ({ setProfileImage, loginUser }) => {
-    if (loginUser) {
+export const fetchGetProfileImage = async ({ setProfileImage, paramUser }) => {
+    if (paramUser) {
       const { data, error } = await supabase
         .from('users')
         .select('profile_image_url')
-        .eq('id', loginUser.id)
+        .eq('id', paramUser.id )
         .single();
 
       if (error) {
