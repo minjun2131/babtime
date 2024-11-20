@@ -51,7 +51,6 @@ const SignUp = () => {
       throw error;
     }
 
-    /////////////////////////////
     // Users 테이블에 추가 데이터 저장
     const { error: dbError } = await supabase
       .from('users')

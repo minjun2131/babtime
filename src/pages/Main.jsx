@@ -52,45 +52,15 @@ const Main = () => {
     fetchData();
   }, []);
 
-<<<<<<< HEAD
   const results = postData.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
-=======
-  useEffect(() => {
-    let results = postData;
-
-    // 검색어로 필터링
-    if (searchTerm) {
-      results = results.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
-    }
-    // 선택한 카테고리로 필터링
-    if (selectedCategory && selectedCategory !== '전체') {
-      results = results.filter((post) => post.category === selectedCategory);
-    }
-
-    setFilteredPosts(results);
-  }, [searchTerm, postData, selectedCategory]);
-
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
-  };
->>>>>>> c9ab72ebc441efe732cd354bcf436eb5c91ee340
 
   return (
     <>
       <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       {!searchTerm && <MainVisual></MainVisual>}
       <Inner>
-<<<<<<< HEAD
         <IntroTitle>다양한 맛집 리뷰를 확인해 보세요.</IntroTitle>
 
-=======
-        {searchTerm ? (
-          <IntroTitle>{searchTerm}의 검색결과입니다.</IntroTitle>
-        ) : (
-          <IntroTitle>다양한 맛집 리뷰를 확인해 보세요.</IntroTitle>
-        )}
-        <Category onCategoryClick={handleCategoryClick} selectedCategory={selectedCategory} />
->>>>>>> c9ab72ebc441efe732cd354bcf436eb5c91ee340
         <PostList posts={filteredPosts} loading={loading} error={error} />
       </Inner>
     </>

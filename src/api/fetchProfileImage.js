@@ -3,36 +3,7 @@ import { supabase } from './services/supabase';
 export const uploadProfileImage = async ({ file, userId }) => {
   if (!file || !userId) return null;
 
-<<<<<<< HEAD
-    const fileName = `profile_images/${userId}/profileImage.jpg`; // 파일 이름을 고정
-=======
-    // // 유저 폴더 내의 기존 파일을 삭제
-    // const { data: existingFiles, error: listError } = await supabase.storage
-    //     .from("profile_images")
-    //     .list(`profile_images/${userId}`);
-
-    // if (listError) {
-    //     console.error("Error listing files:", listError);
-    //     return null;
-    // }
-
-    // // 기존 파일이 있다면 삭제
-    // if (existingFiles.length > 0) {
-    //     for (const file of existingFiles) {
-    //         const { error: removeError } = await supabase.storage
-    //             .from("profile_images")
-    //             .remove([file.name]);
-
-    //         if (removeError) {
-    //             console.error("Error removing file:", removeError);
-    //             return null;
-    //         }
-    //     }
-    // }
-
-    const timestamp = Date.now(); // 현재 시간을 밀리초로 가져오기
-    const fileName = `profile_images/${userId}/${timestamp}`; // 파일 이름을 고정
->>>>>>> c9ab72ebc441efe732cd354bcf436eb5c91ee340
+  const fileName = `profile_images/${userId}/profileImage.jpg`; // 파일 이름을 고정
 
   const { data, error } = await supabase.storage
     .from('profile_images') // 버킷 이름
