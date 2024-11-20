@@ -1,7 +1,7 @@
 import Search from './Search';
 import HeaderRight from './HeaderRight';
 import { useEffect, useState } from 'react';
-import { supabase } from '../../services/supabase.js';
+import { supabase } from '../../api/services/supabase.js';
 import { HeaderWrap, Inner } from '../../styles/HeaderStyle.jsx';
 import { useLocation, Link } from 'react-router-dom';
 
