@@ -1,11 +1,21 @@
 import React from 'react';
 import ProfileSmall from '../header/ProfileSmall.jsx';
 import { Link } from 'react-router-dom';
-import { PostUl, PostBoxTop, Writer, StyledDate, PostBoxBtm } from '../../styles/MainStyle.jsx';
+import {
+  PostUl,
+  PostBoxTop,
+  Writer,
+  StyledDate,
+  PostBoxBtm,
+  PostInfo,
+  Rating,
+  Loading,
+  ErrorScreen
+} from '../../styles/MainStyle.jsx';
 
 export const PostList = ({ posts, loading, error, userInfo }) => {
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>데이터를 불러오는 데 문제가 발생했습니다.</div>;
+  if (loading) return <Loading></Loading>;
+  if (error) return <ErrorScreen>데이터를 불러오는 데 문제가 발생했습니다.</ErrorScreen>;
 
   return (
     <PostUl>
@@ -19,18 +29,31 @@ export const PostList = ({ posts, loading, error, userInfo }) => {
 
         return (
           <li key={post.id}>
+            <Link to={`/detail/${post.id}`}></Link>
             <PostBoxTop>
-              {post.userId && <Link to={`/myPage/${post.userId}`}></Link>}
-              <ProfileSmall profileImage={userInfo ? userInfo.profile_image_url : post.userImage}></ProfileSmall>
+              {post.userId ? (
+                <Link to={`/myPage/${post.userId}`}>
+                  <ProfileSmall profileImage={userInfo ? userInfo.profile_image_url : post.userImage}></ProfileSmall>
+                </Link>
+              ) : (
+                <ProfileSmall profileImage={userInfo ? userInfo.profile_image_url : post.userImage}></ProfileSmall>
+              )}
+
               <div>
                 <Writer>{userInfo ? userInfo.name : post.userName}</Writer>
                 <StyledDate>{formattedDate}</StyledDate>
               </div>
             </PostBoxTop>
             <PostBoxBtm image={post.image_url}>
-              <Link to={`/detail/${post.id}`}></Link>
               <figure></figure>
-              <p>{post.description}</p>
+              <PostInfo>
+                <strong>{post.title}</strong>
+                <Rating>
+                  <i>★&nbsp;</i>
+                  {post.rating}
+                </Rating>
+                <p>{post.description}</p>
+              </PostInfo>
             </PostBoxBtm>
           </li>
         );
