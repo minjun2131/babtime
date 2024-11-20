@@ -3,6 +3,7 @@ import Router from './routes/Router';
 import GlobalStyle from './styles/GlobalStyle';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { UserProvider } from './api/contexts/UserContext';
 
 const Toast = styled(ToastContainer)`
   .Toastify__toast {
@@ -30,11 +31,11 @@ const Toast = styled(ToastContainer)`
 
 const App = () => {
   return (
-    <>
+    <UserProvider>
       <GlobalStyle />
       <Router />
       <Toast position="top-center" autoClose={100000} closeButton={false} hideProgressBar />
-    </>
+    </UserProvider>
   );
 };
 

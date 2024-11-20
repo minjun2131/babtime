@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { color } from '../../configurations/Color';
 import { typography } from '../../configurations/Typography';
 import { useEffect, useState } from 'react';
-import { supabase } from '../../services/supabase';
+import { supabase } from '../../api/services/supabase';
 import { toast } from 'react-toastify';
 
 const Container = styled.div`

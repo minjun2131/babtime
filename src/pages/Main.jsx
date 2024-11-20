@@ -1,7 +1,7 @@
 import Header from '../components/header/Header.jsx';
 import { Inner, MainVisual, IntroTitle } from '../styles/MainStyle.jsx';
 import PostList from '../components/main/PostList.jsx';
-import { supabase } from '../services/supabase.js';
+import { supabase } from '../api/services/supabase.js';
 import React, { useEffect, useState } from 'react';
 
 const Main = () => {

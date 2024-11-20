@@ -7,12 +7,13 @@ import TextAreaInput from '../components/postedit/TextAreaInput';
 import RatingSelector from '../components/postedit/RatingSelector';
 import { Container, ButtonGroup, SubmitButton, CancelButton } from '../styles/PostEditStyle';
 import { useNavigate, useParams } from 'react-router-dom';
-import { supabase } from '../services/supabase';
+import { supabase } from '../api/services/supabase';
 import { toast } from 'react-toastify';
+import { useAuth } from '../api/contexts/UserContext';
 
 const PostEdit = () => {
+  const { currentUser } = useAuth();
   const { id: postId } = useParams();
-  const [currentUser, setCurrentUser] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
   const [title, setTitle] = useState('');
   const [address, setAddress] = useState('');
@@ -25,8 +26,6 @@ const PostEdit = () => {
   const categories = ['한식', '중식', '양식', '일식', '분식', '카페 / 베이커리'];
 
   // 로그인 여부 확인 및 사용자 정보 가져오기
-
-  // CurrentUser부분 커스텀 훅으로 분리하기
   useEffect(() => {
     const checkUser = async () => {
       const {
@@ -41,7 +40,7 @@ const PostEdit = () => {
     };
 
     checkUser();
-  }, [nav]);
+  }, []);
 
   // 기존 게시물 데이터를 불러오기
   useEffect(() => {
