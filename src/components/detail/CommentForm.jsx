@@ -9,7 +9,7 @@ const Container = styled.form`
 `;
 
 const Textarea = styled.textarea`
-  width: 1100px;
+  width: 700px;
   height: 80px;
   border-radius: 5px;
   ${typography.body1};
