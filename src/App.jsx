@@ -7,7 +7,7 @@ import { UserProvider } from './api/contexts/UserContext';
 
 const Toast = styled(ToastContainer)`
   .Toastify__toast {
-    width: 100%;
+    width: max-content;
     border-radius: 8px;
     font-size: 16px;
     font-weight: 700;
@@ -15,6 +15,7 @@ const Toast = styled(ToastContainer)`
     text-align: center;
     padding: 10px 20px;
   }
+
   .Toastify__toast--info {
     border: 2px solid #2c8ad2;
   }
@@ -23,6 +24,8 @@ const Toast = styled(ToastContainer)`
   }
   .Toastify__toast--error {
     border: 2px solid #e33f32;
+    left: 37px;
+    top: 50px;
   }
 `;
 

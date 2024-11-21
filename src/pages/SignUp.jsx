@@ -1,13 +1,36 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../api/services/supabase.js';
-import { SignUpForm, Logo, InputWrap, InputDiv, FormButton, LinkStyle } from '../styles/SignUpStyle.jsx';
+import {
+  SignUpForm,
+  Logo,
+  InputWrap,
+  InputDiv,
+  InputName,
+  Input,
+  FormButton,
+  LinkStyle
+} from '../styles/SignUpStyle.jsx';
 import { toast } from 'react-toastify';
-import InputField from '../components/form/inputfield.jsx';
-import useFormHandler from '../components/form/useFormHandler.js';
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const { formData, handleInputChange } = useFormHandler({});
+  // 상태 객체 정의
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    passwordConfirm: '',
+    name: ''
+  });
+
+  // 상태 변경 함수
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
 
   const validateForm = ({ email, password, passwordConfirm, name }) => {
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$!%*?&])[A-Za-z\d@#$!%*?&]{6,}$/;
@@ -51,6 +74,7 @@ const SignUp = () => {
       throw error;
     }
 
+    /////////////////////////////
     // Users 테이블에 추가 데이터 저장
     const { error: dbError } = await supabase
       .from('users')
@@ -74,26 +98,26 @@ const SignUp = () => {
     <SignUpForm onSubmit={handleSignUp}>
       <div>
         <Logo>
-          <img src="../../public/images/logo.svg" alt="밥타임_로고" />
+          <img src="logo.png" alt="밥타임_로고" />
         </Logo>
       </div>
       <InputWrap>
-        <InputField label="아이디" name="email" value={formData.email} onChange={handleInputChange} />
-        <InputField
-          label="비밀번호"
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleInputChange}
-        />
-        <InputField
-          label="비밀번호 확인"
-          type="password"
-          name="passwordConfirm"
-          value={formData.passwordConfirm}
-          onChange={handleInputChange}
-        />
-        <InputField label="이름" type="text" name="text" value={formData.name} onChange={handleInputChange} />
+        <InputDiv>
+          <InputName>아이디</InputName>
+          <Input name="email" value={formData.email} onChange={handleInputChange} />
+        </InputDiv>
+        <InputDiv>
+          <InputName>비밀번호</InputName>
+          <Input type="password" name="password" value={formData.password} onChange={handleInputChange} />
+        </InputDiv>
+        <InputDiv>
+          <InputName>비밀번호 확인</InputName>
+          <Input type="password" name="passwordConfirm" value={formData.passwordConfirm} onChange={handleInputChange} />
+        </InputDiv>
+        <InputDiv>
+          <InputName>이름</InputName>
+          <Input type="text" name="name" value={formData.name} onChange={handleInputChange} />
+        </InputDiv>
         <InputDiv>
           <FormButton type="submit">회원가입</FormButton>
         </InputDiv>

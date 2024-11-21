@@ -13,9 +13,10 @@ import {
   ErrorScreen
 } from '../../styles/MainStyle.jsx';
 
-export const PostList = ({ posts, loading, error, userInfo }) => {
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>데이터를 불러오는 데 문제가 발생했습니다.</div>;
+export const PostList = ({ posts, loading, error, userInfo, page = '' }) => {
+  if (loading) return <Loading></Loading>;
+  if (error) return <ErrorScreen>데이터를 불러오는 데 문제가 발생했습니다.</ErrorScreen>;
+  if (!posts || posts.length === 0 )  { return page === 'like' ? <ErrorScreen>아직 좋아요 누른 게시글이 없습니다. 마음에 드는 글을 찾아보세요.</ErrorScreen> : <ErrorScreen>등록된 게시글이 없습니다. 새로운 글을 작성해보세요.</ErrorScreen> }
 
   return (
     <PostUl>
@@ -26,12 +27,7 @@ export const PostList = ({ posts, loading, error, userInfo }) => {
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
         const formattedDate = `${year}-${month}-${day}`; // 최종 포맷
-        // 11 ~ 16 로직까지 아래 return까지 컴포넌트를 만들어서 props로 post를 받게
-        // 11 ~ 35 줄까지 아우르는 컴포넌트를 하나 만드는게 맞음
-        // 그 다음 map을 사용해서 그 안에 포스트 하나를 넣어주게 변경이 되야 함.
 
-        // return 부턴 view를 담당하는데 간단한 조건부나 필터링은 괜찮지만
-        // 이렇게 길어지는건 옳지 않은 패턴임
         return (
           <li key={post.id}>
             <Link to={`/detail/${post.id}`}></Link>
