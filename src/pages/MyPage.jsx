@@ -36,7 +36,7 @@ const MyPage = () => {
     if (param.id) {
       fetchParamUserData();
     }
-  }, [param.id]);
+  }, [param.id, reload]);
 
   // 작성한 게시물 가져오기
   useEffect(() => {
@@ -76,7 +76,7 @@ const MyPage = () => {
     <>
       <Header key={reload} />
       <StyledMypageWrapper>
-        <MyPageProfile paramUser={paramUser} triggerReload={() => setReload(!reload)} />
+        <MyPageProfile paramUser={paramUser} reload={reload} setReload={setReload} />
         <MyPageMyPostList paramUser={paramUser} posts={writePosts} loading={loading} error={error} />
         {paramUser && loginUser && paramUser.id === loginUser.id && (
           <MyPageLikePostList posts={likePosts} loading={loading} error={error} />

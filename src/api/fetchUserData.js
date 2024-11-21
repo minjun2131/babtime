@@ -93,7 +93,7 @@ export const fetchUpdateUserData = async ({ userId, name, introduce, uploadedUrl
     if (error) {
       console.error('Error updating user data:', error);
     } else {
-      console.log('User data updated successfully:', data);
+      console.log('User data updated successfully');
     }
   } catch (error) {
     console.error('Error:', error);
