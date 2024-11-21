@@ -94,7 +94,7 @@ const SignUp = () => {
           value={formData.passwordConfirm}
           onChange={handleInputChange}
         />
-        <InputField label="이름" type="text" name="text" value={formData.name} onChange={handleInputChange} />
+        <InputField label="이름" type="text" name="name" value={formData.name} onChange={handleInputChange} />
         <InputDiv>
           <FormButton type="submit">회원가입</FormButton>
         </InputDiv>
