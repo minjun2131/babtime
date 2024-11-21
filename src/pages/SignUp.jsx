@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../api/services/supabase.js';
 import { SignUpForm, Logo, InputWrap, InputDiv, FormButton, LinkStyle } from '../styles/SignUpStyle.jsx';
-import InputField from '../components/form/inputfield.jsx';
+import InputField from '../components/form/InputField.jsx';
 import useFormHandler from '../components/form/useFormHandler.js';
 import { toast } from 'react-toastify';
 

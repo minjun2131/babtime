@@ -3,7 +3,7 @@ import { SignUpForm, Logo, InputWrap, FormButton, LinkStyle, InputDiv } from '..
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../api/contexts/UserContext.jsx';
 import useFormHandler from '../components/form/useFormHandler.js';
-import InputField from '../components/form/inputfield.jsx';
+import InputField from '../components/form/InputField.jsx';
 import { toast } from 'react-toastify';
 
 const Login = () => {
