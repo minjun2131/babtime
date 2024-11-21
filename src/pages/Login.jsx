@@ -52,7 +52,7 @@ const Login = () => {
     <SignUpForm onSubmit={signIn}>
       <div>
         <Logo>
-          <img src="../../public/images/logo.svg" alt="밥타임_로고" />
+          <img src="/images/logo.svg" alt="밥타임_로고" />
         </Logo>
       </div>
       <InputWrap>

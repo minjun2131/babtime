@@ -75,7 +75,7 @@ const SignUp = () => {
     <SignUpForm onSubmit={handleSignUp}>
       <div>
         <Logo>
-          <img src="logo.png" alt="밥타임_로고" />
+          <img src="/images/logo.svg" alt="밥타임_로고" />
         </Logo>
       </div>
       <InputWrap>

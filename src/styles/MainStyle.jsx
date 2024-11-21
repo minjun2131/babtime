@@ -5,7 +5,7 @@ import { typography } from '../configurations/Typography';
 export const MainVisual = styled.section`
   width: 100%;
   height: 350px;
-  background: url('../../public/images/main_visual_img1.jpg') no-repeat 50% 75%;
+  background: url('/images/main_visual_img1.jpg') no-repeat 50% 75%;
   background-size: cover;
 `;
 
@@ -81,7 +81,7 @@ export const PostBoxBtm = styled.article`
     width: 100%;
     height: 200px;
     overflow: hidden;
-    background-image: url(${(props) => (props.image ? props.image : '../public/images/noimg.svg')});
+    background-image: url(${(props) => (props.image ? props.image : '/images/noimg.svg')});
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
