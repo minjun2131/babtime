@@ -1,7 +1,7 @@
 import Header from '../components/header/Header';
 import CommentForm from '../components/detail/CommentForm';
 import CommentList from '../components/detail/CommentList';
-import PostDetail from '../components/detail/postDetail';
+import PostDetail from '../components/detail/PostDetail';
 import Button from '../components/detail/Button';
 import { ButtonContainer, CommentContainer, DetailContainer, Wrap } from '../styles/DetailStyle';
 import { useNavigate, useParams } from 'react-router-dom';
