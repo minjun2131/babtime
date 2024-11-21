@@ -7,7 +7,7 @@ import { UserProvider } from './api/contexts/UserContext';
 
 const Toast = styled(ToastContainer)`
   .Toastify__toast {
-    width: max-content;
+    width: 100%;
     border-radius: 8px;
     font-size: 16px;
     font-weight: 700;
@@ -24,8 +24,6 @@ const Toast = styled(ToastContainer)`
   }
   .Toastify__toast--error {
     border: 2px solid #e33f32;
-    left: 37px;
-    top: 50px;
   }
 `;
 
@@ -34,7 +32,7 @@ const App = () => {
     <UserProvider>
       <GlobalStyle />
       <Router />
-      <Toast position="top-center" autoClose={2000} closeButton={false} hideProgressBar />
+      <Toast position="top-center" autoClose={3000} closeButton={false} hideProgressBar />
     </UserProvider>
   );
 };

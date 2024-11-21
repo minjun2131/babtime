@@ -38,12 +38,15 @@ const InputName = styled.label`
 `;
 
 const Input = styled.input`
+  margin-top: 5px;
   display: block;
   width: 100%;
   height: 40px;
   line-height: 40px;
   border: 1px solid #333;
   border-radius: 5px;
+  font-size: 18px;
+  padding: 10px;
 `;
 
 const FormButton = styled.button`
