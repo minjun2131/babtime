@@ -1,36 +1,13 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../api/services/supabase.js';
-import {
-  SignUpForm,
-  Logo,
-  InputWrap,
-  InputDiv,
-  InputName,
-  Input,
-  FormButton,
-  LinkStyle
-} from '../styles/SignUpStyle.jsx';
+import { SignUpForm, Logo, InputWrap, InputDiv, FormButton, LinkStyle } from '../styles/SignUpStyle.jsx';
+import InputField from '../components/form/inputfield.jsx';
+import useFormHandler from '../components/form/useFormHandler.js';
 import { toast } from 'react-toastify';
 
 const SignUp = () => {
   const navigate = useNavigate();
-  // 상태 객체 정의
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    passwordConfirm: '',
-    name: ''
-  });
-
-  // 상태 변경 함수
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value
-    }));
-  };
+  const { formData, handleInputChange } = useFormHandler({});
 
   const validateForm = ({ email, password, passwordConfirm, name }) => {
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$!%*?&])[A-Za-z\d@#$!%*?&]{6,}$/;
@@ -102,22 +79,22 @@ const SignUp = () => {
         </Logo>
       </div>
       <InputWrap>
-        <InputDiv>
-          <InputName>아이디</InputName>
-          <Input name="email" value={formData.email} onChange={handleInputChange} />
-        </InputDiv>
-        <InputDiv>
-          <InputName>비밀번호</InputName>
-          <Input type="password" name="password" value={formData.password} onChange={handleInputChange} />
-        </InputDiv>
-        <InputDiv>
-          <InputName>비밀번호 확인</InputName>
-          <Input type="password" name="passwordConfirm" value={formData.passwordConfirm} onChange={handleInputChange} />
-        </InputDiv>
-        <InputDiv>
-          <InputName>이름</InputName>
-          <Input type="text" name="name" value={formData.name} onChange={handleInputChange} />
-        </InputDiv>
+        <InputField label="아이디" name="email" value={formData.email} onChange={handleInputChange} />
+        <InputField
+          label="비밀번호"
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleInputChange}
+        />
+        <InputField
+          label="비밀번호 확인"
+          type="password"
+          name="passwordConfirm"
+          value={formData.passwordConfirm}
+          onChange={handleInputChange}
+        />
+        <InputField label="이름" type="text" name="text" value={formData.name} onChange={handleInputChange} />
         <InputDiv>
           <FormButton type="submit">회원가입</FormButton>
         </InputDiv>
