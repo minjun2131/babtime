@@ -42,7 +42,7 @@ const Login = () => {
       setFormData((prevData) => ({ ...prevData, error: error.message }));
     } else {
       setFormData((prevData) => ({ ...prevData, success: '로그인 성공' }));
-      console.log('로그인 성공:', data);
+      toast.success('로그인 성공');
       setIsLogin(true);
       navigate('/');
     }
