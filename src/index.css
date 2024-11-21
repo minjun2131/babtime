@@ -6,7 +6,6 @@
   box-sizing: border-box;
 }
 body {
-  background-color: #f4f4f9;
   -ms-overflow-style: none;
 }
 ::-webkit-scrollbar {
