@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../api/contexts/UserContext';
 
-function MyPageProfileEdit({ setIsProfileModalOpen, paramUser, profileImage, setProfileImage, triggerReload }) {
+function MyPageProfileEdit({ setIsProfileModalOpen, paramUser, profileImage, setProfileImage, reload, setReload }) {
     const { currentUser: loginUser } = useAuth();
     const fileInputRef = useRef();
     const [previewUrl, setPreviewUrl] = useState(null);
@@ -36,24 +36,32 @@ function MyPageProfileEdit({ setIsProfileModalOpen, paramUser, profileImage, set
             if (previewUrl) URL.revokeObjectURL(previewUrl);
             const newPreviewUrl = URL.createObjectURL(selectedFile);
             setPreviewUrl(newPreviewUrl);
-            setProfileImage(newPreviewUrl);
             setFile(selectedFile);
         }
     }
-    
-    // 유저 정보 수정 
+
+    // 유저 정보 저장 
     const handleProfileSave = async () => {
-        // image 파일을 Supabase storage에 업로드
-        const uploadedUrl = await uploadProfileImage({ file, userId });
+        let uploadedUrl = profileImage;
+
+        if (previewUrl) { setProfileImage(previewUrl); 
+            uploadedUrl = previewUrl;
+        }
+        setPreviewUrl(null);
+
+        // 파일이 선택된 경우, 이미지를 Supabase에 업로드하고 URL을 얻기
+        if (file) {
+            uploadedUrl = await uploadProfileImage({ file, userId });
+        }
         fetchUpdateUserData({ userId, name, introduce, uploadedUrl });
         toast.success('프로필이 수정되었습니다.');
-        triggerReload();
         setIsProfileModalOpen(false);
+        setReload(!reload);
     }
 
     const handleImageDelete = () => {
-        setProfileImage(null); // 프로필 이미지 URL 초기화
-        setPreviewUrl(null); // 미리보기 URL 초기화
+        //setProfileImage(null); // 프로필 이미지 URL 초기화
+        setPreviewUrl("/images/user.svg"); // 미리보기 URL 초기화
         setFile(null); // 선택된 파일 초기화
         fileInputRef.current.value = null; // 파일 입력 필드 초기화
     }
@@ -62,7 +70,7 @@ function MyPageProfileEdit({ setIsProfileModalOpen, paramUser, profileImage, set
         <StyledModalWrapper>
             <StyledModalContent>
                 <StyledModalTitle>프로필 수정</StyledModalTitle>
-                <img src={profileImage || "/images/user.svg"} alt="user Image" style={{ borderRadius: "50%" }}/>
+                <img src={previewUrl || profileImage || "/images/user.svg"} alt="user Image" style={{ borderRadius: "50%" }} />
                 {/* 숨겨진 파일 입력 필드 */}
                 <input
                     type="file"
