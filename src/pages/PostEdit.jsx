@@ -25,6 +25,23 @@ const PostEdit = () => {
 
   const categories = ['한식', '중식', '양식', '일식', '분식', '카페 / 베이커리'];
 
+  // 로그인 여부 확인 및 사용자 정보 가져오기
+  useEffect(() => {
+    const checkUser = async () => {
+      const {
+        data: { user }
+      } = await supabase.auth.getUser();
+      if (!user) {
+        toast.info('로그인이 필요합니다.');
+        nav('/login');
+        return;
+      }
+      setCurrentUser(user); // 현재 사용자 정보 저장
+    };
+
+    checkUser();
+  }, []);
+
   // 기존 게시물 데이터를 불러오기
   useEffect(() => {
     const fetchPost = async () => {
@@ -51,7 +68,7 @@ const PostEdit = () => {
     };
 
     fetchPost();
-  }, [postId, currentUser]);
+  }, [postId, nav, currentUser]);
 
   // 이미지 업로드
   const uploadImage = async (file) => {
@@ -62,7 +79,7 @@ const PostEdit = () => {
       return null;
     }
 
-    return await supabase.storage.from('images').getPublicUrl(data.path).publicUrl;
+    return supabase.storage.from('images').getPublicUrl(data.path).publicUrl;
   };
 
   const handleImageUpload = async (event) => {
@@ -71,6 +88,12 @@ const PostEdit = () => {
 
     // 로컬 이미지 미리보기
     const reader = new FileReader();
+    // 굳이 FileReader를 이용해 이미지를 추출하는 이유는?
+    // setImage는 작동하고 있는데 상태관리가 이상해보임
+    // 98번 째 줄에서 FileReader로 읽어서 브라우저에서 url로 만들고
+    // 상태관리를 setImage로 바꿔주는 건 이해가 됨
+    // setImage는 104번꺼는 브라우저에 반영되지 않음
+    // set이 비동기처리기 때문에 110번째 줄만 바뀌게 됨
     reader.onload = () => setImage(reader.result);
     reader.readAsDataURL(file);
 
@@ -136,7 +159,15 @@ const PostEdit = () => {
     };
 
     if (isEdit) {
-      await updatePost(post, postId);
+      const numericId = parseInt(postId, 10);
+      const { error } = await supabase.from('posts').update(post).eq('id', numericId).select();
+      if (error) {
+        console.error('Error updating post:', error.message);
+        toast.error('게시글 수정에 실패했습니다.');
+        return;
+      }
+      toast.success('게시글이 성공적으로 수정되었습니다.');
+      nav(-1);
     } else {
       await createPost(post);
     }

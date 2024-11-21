@@ -39,11 +39,13 @@ const InputName = styled.label`
 
 const Input = styled.input`
   display: block;
+  margin-top: 5px;
   width: 100%;
-  height: 40px;
+  padding: 0 10px;
   line-height: 40px;
   border: 1px solid #333;
   border-radius: 5px;
+  font-size: 18px;
 `;
 
 const FormButton = styled.button`
@@ -55,10 +57,17 @@ const FormButton = styled.button`
   border: none;
   font-size: 16px;
   font-weight: 700;
+  cursor: pointer;
+  &:hover {
+    background-color: #fe963b;
+  }
 `;
 
 const LinkStyle = styled(Link)`
   color: #aaa;
   margin: 30px 0;
+  &:hover {
+    color: #333;
+  }
 `;
 export { SignUpForm, Logo, InputWrap, InputDiv, InputName, Input, FormButton, LinkStyle };
