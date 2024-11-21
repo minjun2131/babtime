@@ -43,8 +43,7 @@
 
 2. **Supabase를 활용한 로그인 및 회원 가입**
    - Authentication API로 이메일/패스워드 기반 로그인 및 회원 가입 구현
-   - `onAuthStateChanged`를 이용해 인증된 유저 상태 변경 추적
-
+     
 3. **Context API를 활용한 전역 상태 관리**
    - `createContext()`, `ContextProvider`, `useContext`를 사용하여 전역 상태 관리
 
